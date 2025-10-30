@@ -1,0 +1,5 @@
+.env
+bot.exe
+/bot
+*.exe
+.DS_Store
