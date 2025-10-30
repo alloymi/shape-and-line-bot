@@ -1,6 +1,6 @@
 module SnL-bot
 
-go 1.25.1
+go 1.25.0
 
 require (
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
