@@ -5,52 +5,18 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/joho/godotenv"
 )
 
 func main() {
-
 	godotenv.Load()
-
-	//keep-alive чтобы бот не засыпал
-	go func() {
-		for {
-			time.Sleep(4 * time.Minute)
-
-			url := "https://shape-line-bot.onrender.com/health"
-			resp, err := http.Get(url)
-			if err != nil {
-				log.Printf("Keep-alive error: %v", err)
-			} else {
-				resp.Body.Close()
-				log.Printf("Keep-alive ping sent to %s", url)
-			}
-		}
-	}()
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Shape and line bot is running!\n\nTelegram: @shape_and_line_bot")
-	})
-
-	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "OK")
-	})
-
-	go func() {
-		log.Printf("Starting http server on port %s", port)
-		if err := http.ListenAndServe(":"+port, nil); err != nil {
-			log.Printf("http server error: %v", err)
-		}
-	}()
 
 	token := os.Getenv("BOT_TOKEN")
 	if token == "" {
@@ -65,14 +31,38 @@ func main() {
 	bot.Debug = true
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 
-	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
-	updates, err := bot.GetUpdatesChan(u)
+	webhookURL := fmt.Sprintf("https://shape-line-bot.onrender.com/%s", bot.Token)
+	_, err = bot.SetWebhook(tgbotapi.NewWebhook(webhookURL))
+	if err != nil {
+		log.Panic(err)
+	}
 
-	for update := range updates {
-		if update.Message != nil {
-			handleMessage(bot, update.Message)
+	info, err := bot.GetWebhookInfo()
+	if err == nil && info.URL != "" {
+		log.Printf("Current webhook: %s", info.URL)
+	}
+
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "OK")
+	})
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Shape & Line bot is running!\nWebhook active.")
+	})
+
+	updates := bot.ListenForWebhook("/" + bot.Token)
+	go func() {
+		for update := range updates {
+			if update.Message != nil {
+				handleMessage(bot, update.Message)
+			}
 		}
+	}()
+
+	log.Printf("Starting server on port %s", port)
+	err = http.ListenAndServe(":"+port, nil)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
