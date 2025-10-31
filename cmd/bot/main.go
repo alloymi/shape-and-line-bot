@@ -36,21 +36,17 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-
-	info, err := bot.GetWebhookInfo()
-	if err == nil && info.URL != "" {
-		log.Printf("Current webhook: %s", info.URL)
-	}
+	log.Printf("Webhook set to: %s", webhookURL)
 
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "OK")
+		fmt.Fprintln(w, "OK")
 	})
-
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Shape & Line bot is running!\nWebhook active.")
+		fmt.Fprintln(w, "Shape & Line bot is running!")
 	})
 
 	updates := bot.ListenForWebhook("/" + bot.Token)
+
 	go func() {
 		for update := range updates {
 			if update.Message != nil {
@@ -59,7 +55,7 @@ func main() {
 		}
 	}()
 
-	log.Printf("Starting server on port %s", port)
+	log.Printf("Server starting on port %s...", port)
 	err = http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		log.Fatal(err)
