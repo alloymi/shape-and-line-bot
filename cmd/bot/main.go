@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/joho/godotenv"
@@ -13,6 +14,22 @@ import (
 func main() {
 
 	godotenv.Load()
+
+	//keep-alive чтобы бот не засыпал
+	go func() {
+		for {
+			time.Sleep(4 * time.Minute)
+
+			url := "https://shape-line-bot.onrender.com/health"
+			resp, err := http.Get(url)
+			if err != nil {
+				log.Printf("Keep-alive error: %v", err)
+			} else {
+				resp.Body.Close()
+				log.Printf("Keep-alive ping sent to %s", url)
+			}
+		}
+	}()
 
 	port := os.Getenv("PORT")
 	if port == "" {
