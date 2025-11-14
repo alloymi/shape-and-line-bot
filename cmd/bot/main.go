@@ -1,9 +1,9 @@
 package main
 
 import (
-	"SnL-bot/internal/bot"
-	"SnL-bot/internal/config"
-	"SnL-bot/internal/pkg/utils"
+	"SnLbot/internal/bot"
+	"SnLbot/internal/config"
+	"SnLbot/internal/pkg/utils"
 	"log"
 )
 

@@ -6,7 +6,7 @@ import (
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 
-	"SnL-bot/internal/config"
+	"SnLbot/internal/config"
 )
 
 func Connect(cfg *config.Config) (*sql.DB, error) {

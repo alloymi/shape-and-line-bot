@@ -1,4 +1,4 @@
-module SnL-bot
+module SnLbot
 
 go 1.25.0
 

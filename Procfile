@@ -1,1 +1,1 @@
-web: go run ./cmd/bot
+web: go run ./cmd/botedited

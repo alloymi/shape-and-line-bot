@@ -1,8 +1,8 @@
 package bot
 
 import (
-	"SnL-bot/internal/config"
-	"SnL-bot/internal/pkg/utils"
+	"SnLbot/internal/config"
+	"SnLbot/internal/pkg/utils"
 	"fmt"
 	"log"
 	"net/http"

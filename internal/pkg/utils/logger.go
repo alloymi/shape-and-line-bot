@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"SnL-bot/internal/config"
+	"SnLbot/internal/config"
 	"os"
 	"time"
 
