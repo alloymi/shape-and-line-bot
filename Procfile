@@ -1,1 +1,1 @@
-web: go run ./cmd/bot
+web: ./out
