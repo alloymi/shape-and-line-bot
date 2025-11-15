@@ -2,4 +2,5 @@
 bot.exe
 /bot
 *.exe
+.json
 .DS_Store
