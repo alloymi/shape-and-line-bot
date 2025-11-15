@@ -3,6 +3,7 @@ package bot
 import (
 	"SnLbot/internal/config"
 	"SnLbot/internal/pkg/utils"
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -13,11 +14,11 @@ import (
 type Bot struct {
 	api *tgbotapi.BotAPI
 	cfg *config.Config
-	//db  *sql.DB
-	r *Router
+	db  *sql.DB
+	r   *Router
 }
 
-func NewBot(cfg *config.Config /*, db *sql.DB */) (*Bot, error) {
+func NewBot(cfg *config.Config, db *sql.DB) (*Bot, error) {
 	api, err := tgbotapi.NewBotAPI(cfg.BotToken)
 	if err != nil {
 		return nil, err
@@ -28,7 +29,7 @@ func NewBot(cfg *config.Config /*, db *sql.DB */) (*Bot, error) {
 	bot := &Bot{
 		api: api,
 		cfg: cfg,
-		// db: db,
+		db:  db,
 	}
 
 	bot.r = NewRouter()
@@ -63,6 +64,13 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 		return
 	case StateCourses:
 		courseWIPHandler(bot, msg)
+		return
+	case StateWaitlistAskFullName:
+		waitlistFullNameHandler(bot, msg)
+		return
+
+	case StateWaitlistAskEmail:
+		waitlistEmailHandler(bot, msg)
 		return
 	}
 
@@ -134,7 +142,13 @@ func (bot *Bot) registerHandlers() {
 		// courses
 		"Фигура человека": courseWIPHandler,
 		"Форма и тон":     courseWIPHandler,
-		"Свет и цвет":     courseWIPHandler,
+		"Дизайн существ":  courseWIPHandler,
+
+		// waiting list
+		"Записаться в лист ожидания": startWaitlistHandler,
+		"WL: Фигура человека":        waitlistChooseCourseHandler,
+		"WL: Форма и тон":            waitlistChooseCourseHandler,
+		"WL: Дизайн существ":         waitlistChooseCourseHandler,
 	}
 
 	for k, h := range commandMap {

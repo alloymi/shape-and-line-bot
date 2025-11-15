@@ -1,33 +1,32 @@
 package config
 
 import (
-	"log"
 	"os"
 
 	"github.com/joho/godotenv"
 )
 
-// Config holds application configuration loaded from env
 type Config struct {
 	BotToken   string
-	Mode       string // "local" or "prod" (optional)
+	Mode       string
 	Port       string
-	WebhookURL string // set on Railway, e.g. https://myapp.railway.app
+	WebhookURL string
 
-	// Postgres envs (not used yet)
 	DBHost     string
 	DBPort     string
 	DBUser     string
 	DBPassword string
 	DBName     string
 	DBSSLMode  string
+
+	GoogleServiceAccountJSON string
+	GoogleSpreadsheetID      string
 }
 
-// Load reads .env and environment variables, returns Config
 func Load() *Config {
-	_ = godotenv.Load()
+	_ = godotenv.Load() // ignore error — Railway использует Variables
 
-	cfg := &Config{
+	return &Config{
 		BotToken:   os.Getenv("BOT_TOKEN"),
 		Mode:       os.Getenv("MODE"),
 		Port:       os.Getenv("PORT"),
@@ -39,22 +38,8 @@ func Load() *Config {
 		DBPassword: os.Getenv("DB_PASSWORD"),
 		DBName:     os.Getenv("DB_NAME"),
 		DBSSLMode:  os.Getenv("DB_SSLMODE"),
-	}
 
-	if cfg.BotToken == "" {
-		log.Fatal("BOT_TOKEN must be provided in environment")
+		GoogleServiceAccountJSON: os.Getenv("GOOGLE_SERVICE_ACCOUNT_JSON"),
+		GoogleSpreadsheetID:      os.Getenv("GOOGLE_SPREADSHEET_ID"),
 	}
-
-	if cfg.Port == "" {
-		cfg.Port = "8080"
-	}
-
-	// If Railway provides its URL variable, prefer that as WebhookURL
-	if cfg.WebhookURL == "" {
-		if v := os.Getenv("RAILWAY_STATIC_URL"); v != "" {
-			cfg.WebhookURL = v
-		}
-	}
-
-	return cfg
 }
