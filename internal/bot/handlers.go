@@ -19,7 +19,7 @@ func menuHandler(menuName string, state BotState) Handler {
 	return func(b *Bot, m *tgbotapi.Message) {
 		SetState(m.Chat.ID, state)
 
-		msg := tgbotapi.NewMessage(m.Chat.ID, "Выберите пункт:")
+		msg := tgbotapi.NewMessage(m.Chat.ID, "Выберите интересующий вас пункт:")
 
 		if kb, ok := Menus[menuName]; ok {
 			msg.ReplyMarkup = kb
@@ -34,7 +34,7 @@ func menuHandler(menuName string, state BotState) Handler {
 func startHandler(b *Bot, m *tgbotapi.Message) {
 	SetState(m.Chat.ID, StateDefault)
 
-	msg := tgbotapi.NewMessage(m.Chat.ID, "Главное меню:")
+	msg := tgbotapi.NewMessage(m.Chat.ID, "Здравствуйте! Это Shape and line – современная художественная школа в Санкт-Петербурге с онлайн обучением. \n\nДля максимального результата совмещаем цифровые технологии, прогрессивные зарубежные методики и опыт русского классического образования.\n\nБот расскажет вам про наши курсы, проконсультирует насчет актуальных вопросов, а так же поможет с бронированием и записью в список ожидания!")
 	if kb, ok := Menus["main"]; ok {
 		msg.ReplyMarkup = kb
 	}
@@ -47,15 +47,15 @@ func startHandler(b *Bot, m *tgbotapi.Message) {
 // ===== FAQ ANSWERS =====
 
 func faqHowHandler(b *Bot, m *tgbotapi.Message) {
-	b.sendText(m.Chat.ID, "Курс состоит из предзаписанных лекций, домашних заданий и еженедельных созвонов.")
+	b.sendText(m.Chat.ID, "Курс состоит из предзаписанных лекций, к которым мы выдаём вам доступ и которые вы отсмаьриваете самостоятельно; домашнего задания; и групповых созвонов с куратором раз в неделю, где он даёт детальный фидбек на вашу работу!")
 }
 
 func faqFormatHandler(b *Bot, m *tgbotapi.Message) {
-	b.sendText(m.Chat.ID, "Формат: видеоуроки + задания + групповые созвоны с куратором.")
+	b.sendText(m.Chat.ID, "Курсы представлены в формате предзаписанных лекций, в конце которых содержится домашнее задание. Просматриваете и выполняете задания вы самостоятельно.\n\nЛекции предоставляются в формате файлов для скачивания, которые доступны для просмотра через Инфопротектор. Доступ к лекционным материалам предоставляется студентам бессрочно.\n\nРаз в неделю в определённое время проходит групповой созвон, где вы получаете фидбек на домашнее задание от куратора. Созвоны в основном проходят в 19:00 по МСК, так же у студентов есть доступ к записям фидбеков.\"")
 }
 
 func faqInstallmentHandler(b *Bot, m *tgbotapi.Message) {
-	b.sendText(m.Chat.ID, "Мы предлагаем рассрочку на 4 и 6 месяцев. Рассрочка без процентов — подробности у менеджера.")
+	b.sendText(m.Chat.ID, "Мы предлагаем рассрочку для держателей карт российских банков на 4 и 6 месяцев. Рассрочка без процентов и предоставляется от Т-банка!\n")
 }
 
 // ===== WIP =====
@@ -69,7 +69,7 @@ func courseWIPHandler(b *Bot, m *tgbotapi.Message) {
 func startWaitlistHandler(b *Bot, msg *tgbotapi.Message) {
 	SetState(msg.Chat.ID, StateWaitlistChooseCourse)
 
-	resp := tgbotapi.NewMessage(msg.Chat.ID, "Выберите курс, на который хотите записаться:")
+	resp := tgbotapi.NewMessage(msg.Chat.ID, "Выберите курс, на который хотите записаться в лист ожидания:")
 	resp.ReplyMarkup = WaitlistCoursesMenu()
 
 	b.api.Send(resp)
@@ -80,12 +80,11 @@ func waitlistChooseCourseHandler(b *Bot, msg *tgbotapi.Message) {
 
 	SetState(chatID, StateWaitlistAskFullName)
 
-	// убираем префикс WL: (если есть)
 	cleanName := strings.TrimPrefix(msg.Text, "WL: ")
 	userTempCourse[chatID] = cleanName
 
 	b.api.Send(tgbotapi.NewMessage(chatID,
-		"Отлично! Теперь введите ваше ФИО полностью:\n\nПример: "))
+		"Пожалуйста введите ваше ФИО через пробел:"))
 }
 
 func waitlistFullNameHandler(b *Bot, msg *tgbotapi.Message) {
@@ -101,7 +100,7 @@ func waitlistFullNameHandler(b *Bot, msg *tgbotapi.Message) {
 	SetState(chatID, StateWaitlistAskEmail)
 
 	b.api.Send(tgbotapi.NewMessage(chatID,
-		"Хорошо! Теперь введите вашу почту:\n\nПример: name@gmail.com"))
+		"Теперь введите вашу почту:"))
 }
 
 func waitlistEmailHandler(b *Bot, msg *tgbotapi.Message) {
@@ -109,29 +108,29 @@ func waitlistEmailHandler(b *Bot, msg *tgbotapi.Message) {
 	email := msg.Text
 
 	if !strings.Contains(email, "@") {
-		b.api.Send(tgbotapi.NewMessage(chatID, "Почта выглядит некорректно. Попробуйте ещё раз."))
+		b.api.Send(tgbotapi.NewMessage(chatID, "Некорректный формат почты. Попробуйте ещё раз."))
 		return
 	}
 
 	course := userTempCourse[chatID]
 	fullname := userTempFullname[chatID]
 
-	// 1) PostgreSQL
+	// PostgreSQL
 	if err := db.SaveWaitlist(b.db, chatID, fullname, email, course); err != nil {
 		log.Println("DB error:", err)
-		b.api.Send(tgbotapi.NewMessage(chatID, "Ошибка при сохранении в БД"))
+		b.api.Send(tgbotapi.NewMessage(chatID, "DB save error\nПожалуйста, свяжитесь напрямую с менеджером!"))
 		return
 	}
 
-	// 2) Google Sheets
+	// Google Sheets
 	if err := services.SaveToGoogleSheet(fullname, email, course); err != nil {
 		log.Println("Sheets error:", err)
-		b.api.Send(tgbotapi.NewMessage(chatID, "Ошибка сохранения в Google Sheets"))
+		b.api.Send(tgbotapi.NewMessage(chatID, "Sheets save error\nПожалуйста, свяжитесь напрямую с менеджером!"))
 		return
 	}
 
 	ResetState(chatID)
 
 	b.api.Send(tgbotapi.NewMessage(chatID,
-		"Вы успешно записаны в лист ожидания!"))
+		"Вы успешно записаны в лист ожидания!\nЛист ожидания не предусматривает оплаты, мы лишь уведомим вас о начале набора до официального поста в группе!\nХотим предупредить, что запись в лист ожидания не гарантирует запись на курс."))
 }
