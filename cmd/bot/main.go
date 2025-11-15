@@ -19,6 +19,11 @@ func main() {
 	}
 	defer dbConn.Close()
 
+	err = db.RunMigrations(dbConn)
+	if err != nil {
+		log.Fatalf("Migration error: %v", err)
+	}
+
 	tgBot, err := bot.NewBot(cfg, dbConn)
 	if err != nil {
 		log.Fatalf("Bot init error: %v", err)

@@ -3,6 +3,9 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"log"
+	"os"
+	"path/filepath"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 
@@ -27,4 +30,35 @@ func Connect(cfg *config.Config) (*sql.DB, error) {
 	}
 
 	return db, nil
+}
+
+func RunMigrations(db *sql.DB) error {
+	migrationsPath := "internal/db/migrations"
+
+	files, err := filepath.Glob(filepath.Join(migrationsPath, "*.sql"))
+	if err != nil {
+		return fmt.Errorf("error reading migrations directory: %v", err)
+	}
+
+	if len(files) == 0 {
+		return fmt.Errorf("no migration files found in %s", migrationsPath)
+	}
+
+	for _, file := range files {
+		log.Printf("Running migration: %s", file)
+
+		sqlBytes, err := os.ReadFile(file)
+		if err != nil {
+			return fmt.Errorf("error reading migration file %s: %v", file, err)
+		}
+
+		_, err = db.Exec(string(sqlBytes))
+		if err != nil {
+			return fmt.Errorf("error executing migration %s: %v", file, err)
+		}
+
+		log.Printf("Migration completed: %s", file)
+	}
+
+	return nil
 }
