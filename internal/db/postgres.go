@@ -20,15 +20,18 @@ func Connect(cfg *config.Config) (*sql.DB, error) {
 		cfg.DBName, cfg.DBSSLMode,
 	)
 
+	log.Printf("Connecting to database: host=%s, dbname=%s", cfg.DBHost, cfg.DBName)
+
 	db, err := sql.Open("pgx", connStr)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to open database: %v", err)
 	}
 
 	if err = db.Ping(); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to ping database: %v", err)
 	}
 
+	log.Printf("Successfully connected to database: %s", cfg.DBName)
 	return db, nil
 }
 

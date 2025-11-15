@@ -32,14 +32,21 @@ func Load() *Config {
 		Port:       os.Getenv("PORT"),
 		WebhookURL: os.Getenv("WEBHOOK_URL"),
 
-		DBHost:     os.Getenv("DB_HOST"),
-		DBPort:     os.Getenv("DB_PORT"),
-		DBUser:     os.Getenv("DB_USER"),
-		DBPassword: os.Getenv("DB_PASSWORD"),
-		DBName:     os.Getenv("DB_NAME"),
+		DBHost:     os.Getenv("PGHOST"),
+		DBPort:     os.Getenv("PGPORT"),
+		DBUser:     os.Getenv("PGUSER"),
+		DBPassword: os.Getenv("PGPASSWORD"),
+		DBName:     os.Getenv("PGDATABASE"),
 		DBSSLMode:  os.Getenv("DB_SSLMODE"),
 
 		GoogleServiceAccountJSON: os.Getenv("GOOGLE_SERVICE_ACCOUNT_JSON"),
 		GoogleSpreadsheetID:      os.Getenv("GOOGLE_SPREADSHEET_ID"),
 	}
+}
+
+func getEnvWithFallback(key, fallback string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return fallback
 }
