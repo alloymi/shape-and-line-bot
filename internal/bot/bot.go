@@ -156,7 +156,7 @@ func (bot *Bot) registerHandlers() {
 		"Анатомия человека":              courseWIPHandler,
 
 		// waiting list
-		//"Записаться в лист ожидания": startWaitlistHandler,
+		"Записаться в лист ожидания": startWaitlistHandler,
 		//"WL:Фигура человека":         waitlistChooseCourseHandler,
 		//"WL:Форма и тон":             waitlistChooseCourseHandler,
 		//"WL:Дизайн существ":          waitlistChooseCourseHandler,
