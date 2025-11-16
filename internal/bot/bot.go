@@ -53,6 +53,12 @@ func (bot *Bot) Start() {
 }
 
 func (bot *Bot) processMessage(msg *tgbotapi.Message) {
+
+	if GetState(msg.Chat.ID) == StateWaitlistChooseCourse {
+		waitlistChooseCourseHandler(bot, msg)
+		return
+	}
+
 	if h, ok := bot.r.Resolve(msg.Text); ok {
 		h(bot, msg)
 		return
