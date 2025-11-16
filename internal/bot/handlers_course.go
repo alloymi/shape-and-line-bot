@@ -4,7 +4,6 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-// Длительность
 func courseDurationHandler(bot *Bot, msg *tgbotapi.Message) {
 	chatID := msg.Chat.ID
 	course := userTempCourse[chatID]
@@ -13,7 +12,6 @@ func courseDurationHandler(bot *Bot, msg *tgbotapi.Message) {
 	bot.api.Send(tgbotapi.NewMessage(chatID, info.Duration))
 }
 
-// Старт
 func courseStartHandler(bot *Bot, msg *tgbotapi.Message) {
 	chatID := msg.Chat.ID
 	course := userTempCourse[chatID]
@@ -27,7 +25,6 @@ func courseStartHandler(bot *Bot, msg *tgbotapi.Message) {
 	bot.api.Send(tgbotapi.NewMessage(chatID, info.StartDate))
 }
 
-// Куратор
 func courseTeacherHandler(bot *Bot, msg *tgbotapi.Message) {
 	chatID := msg.Chat.ID
 	course := userTempCourse[chatID]
@@ -36,7 +33,30 @@ func courseTeacherHandler(bot *Bot, msg *tgbotapi.Message) {
 	bot.api.Send(tgbotapi.NewMessage(chatID, info.Curator))
 }
 
-// Назад
+func courseScheduleHandler(bot *Bot, msg *tgbotapi.Message) {
+	chatID := msg.Chat.ID
+	course := userTempCourse[chatID]
+	info := CoursesInfo[course]
+
+	bot.api.Send(tgbotapi.NewMessage(chatID, info.Schedule))
+}
+
+func courseAboutHandler(bot *Bot, msg *tgbotapi.Message) {
+	chatID := msg.Chat.ID
+	course := userTempCourse[chatID]
+	info := CoursesInfo[course]
+
+	bot.api.Send(tgbotapi.NewMessage(chatID, info.About))
+}
+
+func courseToolsHandler(bot *Bot, msg *tgbotapi.Message) {
+	chatID := msg.Chat.ID
+	course := userTempCourse[chatID]
+	info := CoursesInfo[course]
+
+	bot.api.Send(tgbotapi.NewMessage(chatID, info.Tools))
+}
+
 func courseBackHandler(bot *Bot, msg *tgbotapi.Message) {
 	chatID := msg.Chat.ID
 	ResetState(chatID)

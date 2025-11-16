@@ -74,15 +74,27 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 		switch msg.Text {
 
 		case "Длительность курса":
-			bot.api.Send(tgbotapi.NewMessage(chatID, "Длительность: "+info.Duration))
+			bot.api.Send(tgbotapi.NewMessage(chatID, info.Duration))
 			return
 
 		case "Ближайший старт":
-			bot.api.Send(tgbotapi.NewMessage(chatID, "Ближайший старт: "+info.StartDate))
+			bot.api.Send(tgbotapi.NewMessage(chatID, info.StartDate))
 			return
 
 		case "Куратор курса":
 			bot.api.Send(tgbotapi.NewMessage(chatID, info.Curator))
+			return
+
+		case "Программа курса":
+			bot.api.Send(tgbotapi.NewMessage(chatID, info.Schedule))
+			return
+
+		case "О чем курс":
+			bot.api.Send(tgbotapi.NewMessage(chatID, info.About))
+			return
+
+		case "Что понадобится":
+			bot.api.Send(tgbotapi.NewMessage(chatID, info.Tools))
 			return
 
 		case "Назад к выбору курса":
@@ -188,9 +200,13 @@ func (bot *Bot) registerHandlers() {
 		"Анатомия человека":              courseDetailsHandler,
 
 		//courses details
-		"Длительность курса":    courseDurationHandler,
-		"Ближайший старт":       courseStartHandler,
-		"Куратор курса":         courseTeacherHandler,
+		"Длительность курса": courseDurationHandler,
+		"Ближайший старт":    courseStartHandler,
+		"Куратор курса":      courseTeacherHandler,
+		"Программа курса":    courseScheduleHandler,
+		"О чем курс":         courseAboutHandler,
+		"Что понадобится":    courseToolsHandler,
+
 		"Назад к списку курсов": courseBackHandler,
 
 		// waiting list

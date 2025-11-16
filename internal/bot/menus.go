@@ -89,6 +89,24 @@ func CourseMenu(courseName string) tgbotapi.ReplyKeyboardMarkup {
 		))
 	}
 
+	if info.Schedule != "" {
+		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Программа курса"),
+		))
+	}
+
+	if info.About != "" {
+		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("О чем курс"),
+		))
+	}
+
+	if info.Tools != "" {
+		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Что понадобится"),
+		))
+	}
+
 	buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("Назад к списку курсов"),
 	))
