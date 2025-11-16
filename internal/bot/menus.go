@@ -57,14 +57,14 @@ func coursesMenu() tgbotapi.ReplyKeyboardMarkup {
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад в главное меню")))
 }
 
-func CourseDetailsMenu() tgbotapi.ReplyKeyboardMarkup {
-	return tgbotapi.NewReplyKeyboard(
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Длительность курса")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Ближайший старт")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Куратор курса")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад к списку курсов")),
-	)
-}
+//func CourseDetailsMenu() tgbotapi.ReplyKeyboardMarkup {
+//	return tgbotapi.NewReplyKeyboard(
+//		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Длительность курса")),
+//		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Ближайший старт")),
+//		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Куратор курса")),
+//		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад к списку курсов")),
+//	)
+//}
 
 func CourseMenu(courseName string) tgbotapi.ReplyKeyboardMarkup {
 	info := CoursesInfo[courseName]
@@ -90,11 +90,7 @@ func CourseMenu(courseName string) tgbotapi.ReplyKeyboardMarkup {
 	}
 
 	buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("Записаться в лист ожидания"),
-	))
-
-	buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
-		tgbotapi.NewKeyboardButton("Назад"),
+		tgbotapi.NewKeyboardButton("Назад к списку курсов"),
 	))
 
 	return tgbotapi.NewReplyKeyboard(buttons...)
