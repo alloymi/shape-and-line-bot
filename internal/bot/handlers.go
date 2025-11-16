@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"fmt"
 	"log"
 	"strings"
 
@@ -108,12 +109,12 @@ func waitlistFullNameHandler(b *Bot, msg *tgbotapi.Message) {
 		"Теперь введите вашу почту:"))
 }
 
-func waitlistEmailHandler(b *Bot, msg *tgbotapi.Message) {
+func waitlistEmailHandler(bot *Bot, msg *tgbotapi.Message) {
 	chatID := msg.Chat.ID
 	email := msg.Text
 
 	if !strings.Contains(email, "@") {
-		b.api.Send(tgbotapi.NewMessage(chatID, "Некорректный формат почты. Попробуйте ещё раз."))
+		bot.api.Send(tgbotapi.NewMessage(chatID, "Некорректный формат почты. Попробуйте ещё раз."))
 		return
 	}
 
@@ -121,21 +122,27 @@ func waitlistEmailHandler(b *Bot, msg *tgbotapi.Message) {
 	fullname := userTempFullname[chatID]
 
 	// PostgreSQL
-	if err := db.SaveWaitlist(b.db, chatID, fullname, email, course); err != nil {
+	if err := db.SaveWaitlist(bot.db, chatID, fullname, email, course); err != nil {
 		log.Println("DB error:", err)
-		b.api.Send(tgbotapi.NewMessage(chatID, "DB save error\nПожалуйста, свяжитесь напрямую с менеджером!"))
+		bot.api.Send(tgbotapi.NewMessage(chatID, "DB save error\nПожалуйста, свяжитесь напрямую с менеджером!"))
 		return
 	}
 
 	// Google Sheets
 	if err := services.SaveToGoogleSheet(fullname, email, course); err != nil {
 		log.Println("Sheets error:", err)
-		b.api.Send(tgbotapi.NewMessage(chatID, "Sheets save error\nПожалуйста, свяжитесь напрямую с менеджером!"))
+		bot.api.Send(tgbotapi.NewMessage(chatID, "Sheets save error\nПожалуйста, свяжитесь напрямую с менеджером!"))
 		return
 	}
 
+	summary := fmt.Sprintf(
+		"Ваши данные:\\n\\nФИО: %s\\nПочта: %s\\nКурс: %s",
+		fullname, email, course,
+	)
+	bot.api.Send(tgbotapi.NewMessage(chatID, summary))
+
 	ResetState(chatID)
 
-	b.api.Send(tgbotapi.NewMessage(chatID,
-		"Вы успешно записаны в лист ожидания!\nЛист ожидания не предусматривает оплаты, мы лишь уведомим вас о начале набора до официального поста в группе!\nХотим предупредить, что запись в лист ожидания не гарантирует запись на курс."))
+	bot.api.Send(tgbotapi.NewMessage(chatID,
+		"Вы успешно записаны в лист ожидания!\n\nЛист ожидания не предусматривает оплаты, мы лишь уведомим вас о начале набора до официального поста в группе!\nХотим предупредить, что запись в лист ожидания не гарантирует запись на курс."))
 }

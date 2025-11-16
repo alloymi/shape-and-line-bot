@@ -169,15 +169,6 @@ func (bot *Bot) registerHandlers() {
 
 		// waiting list
 		"Записаться в лист ожидания": startWaitlistHandler,
-		//"WL:Фигура человека":         waitlistChooseCourseHandler,
-		//"WL:Форма и тон":             waitlistChooseCourseHandler,
-		//"WL:Дизайн существ":          waitlistChooseCourseHandler,
-		//"Портрет: Скетчинг и стилизация": waitlistChooseCourseHandler,
-		//"Свет и цвет":                    waitlistChooseCourseHandler,
-		//"Динамический портрет":           waitlistChooseCourseHandler,
-		//"Основы рисунка":                 waitlistChooseCourseHandler,
-		//"Мастерская с Евой":              waitlistChooseCourseHandler,
-		//"Анатомия человека":              waitlistChooseCourseHandler,
 	}
 
 	for k, h := range commandMap {
