@@ -175,3 +175,33 @@ func (bot *Bot) registerHandlers() {
 		bot.r.RegisterCommand(k, h)
 	}
 }
+
+func isCourseName(s string) bool {
+	courses := []string{
+		"Фигура человека",
+		"Форма и тон",
+		"Дизайн существ",
+		"Портрет: Скетчинг и стилизация",
+		"Свет и цвет",
+		"Динамический портрет",
+		"Основы рисунка",
+		"Мастерская с Евой",
+		"Анатомия человека",
+	}
+	for _, c := range courses {
+		if s == c {
+			return true
+		}
+	}
+	return false
+}
+
+func resetToMainMenu(b *Bot, chatID int64) {
+	ResetState(chatID)
+	delete(userTempCourse, chatID)
+	delete(userTempFullname, chatID)
+
+	msg := tgbotapi.NewMessage(chatID, "Возвращение в главное меню:")
+	msg.ReplyMarkup = Menus["main"]
+	b.api.Send(msg)
+}

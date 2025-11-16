@@ -89,13 +89,27 @@ func waitlistChooseCourseHandler(b *Bot, msg *tgbotapi.Message) {
 	//userTempCourse[chatID] = cleanName
 	userTempCourse[chatID] = msg.Text
 
-	b.api.Send(tgbotapi.NewMessage(chatID,
-		"Пожалуйста введите ваше ФИО через пробел:"))
+	resp := tgbotapi.NewMessage(chatID, "Пожалуйста введите ваше ФИО через пробел:")
+	resp.ReplyMarkup = WaitlistProgressMenu()
+
+	b.api.Send(resp)
+
 }
 
 func waitlistFullNameHandler(b *Bot, msg *tgbotapi.Message) {
 	chatID := msg.Chat.ID
 	fullname := msg.Text
+
+	if fullname == "Отменить процесс записи" || fullname == "Назад в главное меню" {
+		resetToMainMenu(b, chatID)
+		return
+	}
+
+	if isCourseName(fullname) {
+		b.api.Send(tgbotapi.NewMessage(chatID,
+			"Пожалуйста, введите ваше ФИО:"))
+		return
+	}
 
 	if len(fullname) < 5 || len(strings.Split(fullname, " ")) < 2 {
 		b.api.Send(tgbotapi.NewMessage(chatID, "Пожалуйста, укажите ФИО полностью."))
@@ -105,13 +119,19 @@ func waitlistFullNameHandler(b *Bot, msg *tgbotapi.Message) {
 	userTempFullname[chatID] = fullname
 	SetState(chatID, StateWaitlistAskEmail)
 
-	b.api.Send(tgbotapi.NewMessage(chatID,
-		"Теперь введите вашу почту:"))
+	resp := tgbotapi.NewMessage(chatID, "Теперь введите вашу почту:")
+	resp.ReplyMarkup = WaitlistProgressMenu()
+	b.api.Send(resp)
 }
 
 func waitlistEmailHandler(bot *Bot, msg *tgbotapi.Message) {
 	chatID := msg.Chat.ID
 	email := msg.Text
+
+	if email == "Отменить процесс записи" || email == "Назад в главное меню" {
+		resetToMainMenu(bot, chatID)
+		return
+	}
 
 	if !strings.Contains(email, "@") {
 		bot.api.Send(tgbotapi.NewMessage(chatID, "Некорректный формат почты. Попробуйте ещё раз."))
@@ -136,7 +156,7 @@ func waitlistEmailHandler(bot *Bot, msg *tgbotapi.Message) {
 	}
 
 	summary := fmt.Sprintf(
-		"Ваши данные:\n\nФИО: %s \nПочта: %s \nКурс: %s",
+		"Ваши данные:\n\nФИО:  %s \nПочта:  %s \nКурс:  %s",
 		fullname, email, course,
 	)
 	bot.api.Send(tgbotapi.NewMessage(chatID, summary))
