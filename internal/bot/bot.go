@@ -131,9 +131,9 @@ func (bot *Bot) registerHandlers() {
 		"/help":  startHandler,
 
 		// main menu
-		"Частые вопросы": menuHandler("faq", StateFAQ),
-		"Все курсы":      menuHandler("courses", StateCourses),
-		"назад":          startHandler,
+		"Частые вопросы":       menuHandler("faq", StateFAQ),
+		"Все курсы":            menuHandler("courses", StateCourses),
+		"Назад в главное меню": startHandler,
 
 		// faq
 		"Как проходит обучение?":                    faqHowHandler,
@@ -148,9 +148,9 @@ func (bot *Bot) registerHandlers() {
 
 		// waiting list
 		"Записаться в лист ожидания": startWaitlistHandler,
-		"WL: Фигура человека":        waitlistChooseCourseHandler,
-		"WL: Форма и тон":            waitlistChooseCourseHandler,
-		"WL: Дизайн существ":         waitlistChooseCourseHandler,
+		"WL:Фигура человека":         waitlistChooseCourseHandler,
+		"WL:Форма и тон":             waitlistChooseCourseHandler,
+		"WL:Дизайн существ":          waitlistChooseCourseHandler,
 	}
 
 	for k, h := range commandMap {

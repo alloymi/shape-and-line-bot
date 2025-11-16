@@ -36,7 +36,7 @@ func faqMenu() tgbotapi.ReplyKeyboardMarkup {
 			tgbotapi.NewKeyboardButton("Я из другой страны. Могу ли я записаться на курс? Как проходит оплата?"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("назад"),
+			tgbotapi.NewKeyboardButton("Назад в главное меню"),
 		),
 	)
 }
@@ -52,19 +52,19 @@ func coursesMenu() tgbotapi.ReplyKeyboardMarkup {
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Основы рисунка")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Мастерская с Евой")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Анатомия человека")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад")))
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад в главное меню")))
 }
 
 func WaitlistCoursesMenu() tgbotapi.ReplyKeyboardMarkup {
 	return tgbotapi.NewReplyKeyboard(
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Фигура человека")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Форма и тон")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Дизайн существ")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("WL:Фигура человека")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("WL:Форма и тон")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("WL:Дизайн существ")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Портрет: Скетчинг и стилизация")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Свет и цвет")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Динамический портрет")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Основы рисунка")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Мастерская с Евой")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Анатомия человека")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад")))
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад в главное меню")))
 }
