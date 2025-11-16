@@ -78,15 +78,6 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 	case StateCourses:
 		courseWIPHandler(bot, msg)
 		return
-		//case StateWaitlistChooseCourse:
-		//	waitlistChooseCourseHandler(bot, msg)
-		//	return
-		//case StateWaitlistAskFullName:
-		//	waitlistFullNameHandler(bot, msg)
-		//	return
-		//case StateWaitlistAskEmail:
-		//	waitlistEmailHandler(bot, msg)
-		//	return
 	}
 
 	startHandler(bot, msg)
@@ -152,13 +143,13 @@ func (bot *Bot) registerHandlers() {
 
 		// faq
 		"Как проходит обучение?":                    faqHowHandler,
-		"Формат обучения":                           faqFormatHandler,
+		"Формат обучения?":                          faqFormatHandler,
 		"Хочу оплатить в рассрочку. Какие условия?": faqInstallmentHandler,
 		"Я из другой страны. Могу ли я записаться на курс? Как проходит оплата?": faqForeignHandler,
 
 		// courses
-		"Фигура человека":                courseWIPHandler,
-		"Форма и тон":                    courseWIPHandler,
+		"Фигура человека":                courseDetailsHandler,
+		"Форма и тон":                    courseDetailsHandler,
 		"Дизайн существ":                 courseWIPHandler,
 		"Портрет: Скетчинг и стилизация": courseWIPHandler,
 		"Свет и цвет":                    courseWIPHandler,
@@ -166,6 +157,12 @@ func (bot *Bot) registerHandlers() {
 		"Основы рисунка":                 courseWIPHandler,
 		"Мастерская с Евой":              courseWIPHandler,
 		"Анатомия человека":              courseWIPHandler,
+
+		//courses details
+		"Длительность курса":    courseDurationHandler,
+		"Ближайший старт":       courseStartHandler,
+		"Куратор курса":         courseTeacherHandler,
+		"Назад к списку курсов": courseBackHandler,
 
 		// waiting list
 		"Записаться в лист ожидания": startWaitlistHandler,
@@ -201,7 +198,7 @@ func resetToMainMenu(b *Bot, chatID int64) {
 	delete(userTempCourse, chatID)
 	delete(userTempFullname, chatID)
 
-	msg := tgbotapi.NewMessage(chatID, "Возвращение в главное меню:")
+	msg := tgbotapi.NewMessage(chatID, "Запись отменена. Возвращение в главное меню.")
 	msg.ReplyMarkup = Menus["main"]
 	b.api.Send(msg)
 }

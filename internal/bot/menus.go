@@ -27,7 +27,7 @@ func faqMenu() tgbotapi.ReplyKeyboardMarkup {
 			tgbotapi.NewKeyboardButton("Как проходит обучение?"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Формат обучения"),
+			tgbotapi.NewKeyboardButton("Формат обучения?"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("Хочу оплатить в рассрочку. Какие условия?"),
@@ -53,6 +53,15 @@ func coursesMenu() tgbotapi.ReplyKeyboardMarkup {
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Мастерская с Евой")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Анатомия человека")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад в главное меню")))
+}
+
+func CourseDetailsMenu() tgbotapi.ReplyKeyboardMarkup {
+	return tgbotapi.NewReplyKeyboard(
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Длительность курса")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Ближайший старт")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Куратор курса")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад к списку курсов")),
+	)
 }
 
 func WaitlistCoursesMenu() tgbotapi.ReplyKeyboardMarkup {
