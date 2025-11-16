@@ -136,13 +136,19 @@ func waitlistEmailHandler(bot *Bot, msg *tgbotapi.Message) {
 	}
 
 	summary := fmt.Sprintf(
-		"Ваши данные:\\n\\nФИО: %s\\nПочта: %s\\nКурс: %s",
+		"Ваши данные:\n\nФИО: %s \nПочта: %s \nКурс: %s",
 		fullname, email, course,
 	)
 	bot.api.Send(tgbotapi.NewMessage(chatID, summary))
 
-	ResetState(chatID)
-
 	bot.api.Send(tgbotapi.NewMessage(chatID,
 		"Вы успешно записаны в лист ожидания!\n\nЛист ожидания не предусматривает оплаты, мы лишь уведомим вас о начале набора до официального поста в группе!\nХотим предупредить, что запись в лист ожидания не гарантирует запись на курс."))
+
+	ResetState(chatID)
+
+	mainMenuMsg := tgbotapi.NewMessage(chatID, "Возвращение в главное меню:")
+	if kb, ok := Menus["main"]; ok {
+		mainMenuMsg.ReplyMarkup = kb
+	}
+	bot.api.Send(mainMenuMsg)
 }
