@@ -54,8 +54,15 @@ func (bot *Bot) Start() {
 
 func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 
-	if GetState(msg.Chat.ID) == StateWaitlistChooseCourse {
+	switch GetState(msg.Chat.ID) {
+	case StateWaitlistChooseCourse:
 		waitlistChooseCourseHandler(bot, msg)
+		return
+	case StateWaitlistAskFullName:
+		waitlistFullNameHandler(bot, msg)
+		return
+	case StateWaitlistAskEmail:
+		waitlistEmailHandler(bot, msg)
 		return
 	}
 
@@ -71,16 +78,15 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 	case StateCourses:
 		courseWIPHandler(bot, msg)
 		return
-	case StateWaitlistChooseCourse:
-		waitlistChooseCourseHandler(bot, msg)
-		return
-	case StateWaitlistAskFullName:
-		waitlistFullNameHandler(bot, msg)
-		return
-
-	case StateWaitlistAskEmail:
-		waitlistEmailHandler(bot, msg)
-		return
+		//case StateWaitlistChooseCourse:
+		//	waitlistChooseCourseHandler(bot, msg)
+		//	return
+		//case StateWaitlistAskFullName:
+		//	waitlistFullNameHandler(bot, msg)
+		//	return
+		//case StateWaitlistAskEmail:
+		//	waitlistEmailHandler(bot, msg)
+		//	return
 	}
 
 	startHandler(bot, msg)
