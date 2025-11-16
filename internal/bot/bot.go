@@ -136,8 +136,10 @@ func (bot *Bot) registerHandlers() {
 		"назад":          startHandler,
 
 		// faq
-		"Как проходит обучение?": faqHowHandler,
-		"Формат обучения":        faqFormatHandler,
+		"Как проходит обучение?":                    faqHowHandler,
+		"Формат обучения":                           faqFormatHandler,
+		"Хочу оплатить в рассрочку. Какие условия?": faqInstallmentHandler,
+		"Я из другой страны. Могу ли я записаться на курс? Как проходит оплата?": faqForeignHandler,
 
 		// courses
 		"Фигура человека": courseWIPHandler,
