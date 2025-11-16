@@ -65,6 +65,9 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 	case StateCourses:
 		courseWIPHandler(bot, msg)
 		return
+	case StateWaitlistChooseCourse:
+		waitlistChooseCourseHandler(bot, msg)
+		return
 	case StateWaitlistAskFullName:
 		waitlistFullNameHandler(bot, msg)
 		return
@@ -142,15 +145,27 @@ func (bot *Bot) registerHandlers() {
 		"Я из другой страны. Могу ли я записаться на курс? Как проходит оплата?": faqForeignHandler,
 
 		// courses
-		"Фигура человека": courseWIPHandler,
-		"Форма и тон":     courseWIPHandler,
-		"Дизайн существ":  courseWIPHandler,
+		"Фигура человека":                courseWIPHandler,
+		"Форма и тон":                    courseWIPHandler,
+		"Дизайн существ":                 courseWIPHandler,
+		"Портрет: Скетчинг и стилизация": courseWIPHandler,
+		"Свет и цвет":                    courseWIPHandler,
+		"Динамический портрет":           courseWIPHandler,
+		"Основы рисунка":                 courseWIPHandler,
+		"Мастерская с Евой":              courseWIPHandler,
+		"Анатомия человека":              courseWIPHandler,
 
 		// waiting list
-		"Записаться в лист ожидания": startWaitlistHandler,
-		"WL:Фигура человека":         waitlistChooseCourseHandler,
-		"WL:Форма и тон":             waitlistChooseCourseHandler,
-		"WL:Дизайн существ":          waitlistChooseCourseHandler,
+		//"Записаться в лист ожидания": startWaitlistHandler,
+		//"WL:Фигура человека":         waitlistChooseCourseHandler,
+		//"WL:Форма и тон":             waitlistChooseCourseHandler,
+		//"WL:Дизайн существ":          waitlistChooseCourseHandler,
+		//"Портрет: Скетчинг и стилизация": waitlistChooseCourseHandler,
+		//"Свет и цвет":                    waitlistChooseCourseHandler,
+		//"Динамический портрет":           waitlistChooseCourseHandler,
+		//"Основы рисунка":                 waitlistChooseCourseHandler,
+		//"Мастерская с Евой":              waitlistChooseCourseHandler,
+		//"Анатомия человека":              waitlistChooseCourseHandler,
 	}
 
 	for k, h := range commandMap {

@@ -84,8 +84,9 @@ func waitlistChooseCourseHandler(b *Bot, msg *tgbotapi.Message) {
 
 	SetState(chatID, StateWaitlistAskFullName)
 
-	cleanName := strings.TrimPrefix(msg.Text, "WL:")
-	userTempCourse[chatID] = cleanName
+	//cleanName := strings.TrimPrefix(msg.Text, "WL:")
+	//userTempCourse[chatID] = cleanName
+	userTempCourse[chatID] = msg.Text
 
 	b.api.Send(tgbotapi.NewMessage(chatID,
 		"Пожалуйста введите ваше ФИО через пробел:"))

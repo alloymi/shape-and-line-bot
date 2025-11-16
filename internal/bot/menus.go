@@ -57,9 +57,9 @@ func coursesMenu() tgbotapi.ReplyKeyboardMarkup {
 
 func WaitlistCoursesMenu() tgbotapi.ReplyKeyboardMarkup {
 	return tgbotapi.NewReplyKeyboard(
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("WL:Фигура человека")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("WL:Форма и тон")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("WL:Дизайн существ")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Фигура человека")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Форма и тон")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Дизайн существ")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Портрет: Скетчинг и стилизация")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Свет и цвет")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Динамический портрет")),
