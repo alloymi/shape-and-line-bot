@@ -10,7 +10,7 @@ func courseDurationHandler(bot *Bot, msg *tgbotapi.Message) {
 	course := userTempCourse[chatID]
 	info := CoursesInfo[course]
 
-	bot.api.Send(tgbotapi.NewMessage(chatID, "Длительность курса: "+info.Duration))
+	bot.api.Send(tgbotapi.NewMessage(chatID, info.Duration))
 }
 
 // Старт
@@ -19,12 +19,12 @@ func courseStartHandler(bot *Bot, msg *tgbotapi.Message) {
 	course := userTempCourse[chatID]
 	info := CoursesInfo[course]
 
-	if info.StartDate == "" {
-		bot.api.Send(tgbotapi.NewMessage(chatID, "Информация о старте пока недоступна"))
-		return
-	}
+	//if info.StartDate == "" {
+	//	bot.api.Send(tgbotapi.NewMessage(chatID, "Информация о старте пока недоступна"))
+	//	return
+	//}
 
-	bot.api.Send(tgbotapi.NewMessage(chatID, "Ближайший старт курса: "+info.StartDate))
+	bot.api.Send(tgbotapi.NewMessage(chatID, info.StartDate))
 }
 
 // Куратор
@@ -33,7 +33,7 @@ func courseTeacherHandler(bot *Bot, msg *tgbotapi.Message) {
 	course := userTempCourse[chatID]
 	info := CoursesInfo[course]
 
-	bot.api.Send(tgbotapi.NewMessage(chatID, "Куратор курса: "+info.Curator))
+	bot.api.Send(tgbotapi.NewMessage(chatID, info.Curator))
 }
 
 // Назад

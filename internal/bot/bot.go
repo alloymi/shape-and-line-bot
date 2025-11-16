@@ -85,11 +85,7 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 			bot.api.Send(tgbotapi.NewMessage(chatID, info.Curator))
 			return
 
-		case "Записаться в лист ожидания":
-			startWaitlistHandler(bot, msg)
-			return
-
-		case "Назад":
+		case "Назад к выбору курса":
 			ResetState(chatID)
 			bot.api.Send(tgbotapi.NewMessage(chatID, "Выберите курс:"))
 			back := tgbotapi.NewMessage(chatID, "")
