@@ -66,6 +66,39 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 		return
 	}
 
+	if GetState(msg.Chat.ID) == StateCourseMenu {
+		chatID := msg.Chat.ID
+		course := userTempCourse[chatID]
+		info := CoursesInfo[course]
+
+		switch msg.Text {
+
+		case "Длительность курса":
+			bot.api.Send(tgbotapi.NewMessage(chatID, "Длительность: "+info.Duration))
+			return
+
+		case "Ближайший старт":
+			bot.api.Send(tgbotapi.NewMessage(chatID, "Ближайший старт: "+info.StartDate))
+			return
+
+		case "Куратор курса":
+			bot.api.Send(tgbotapi.NewMessage(chatID, info.Curator))
+			return
+
+		case "Записаться в лист ожидания":
+			startWaitlistHandler(bot, msg)
+			return
+
+		case "Назад":
+			ResetState(chatID)
+			bot.api.Send(tgbotapi.NewMessage(chatID, "Выберите курс:"))
+			back := tgbotapi.NewMessage(chatID, "")
+			back.ReplyMarkup = Menus["courses"]
+			bot.api.Send(back)
+			return
+		}
+	}
+
 	if h, ok := bot.r.Resolve(msg.Text); ok {
 		h(bot, msg)
 		return
@@ -75,9 +108,9 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 	case StateFAQ:
 		bot.api.Send(tgbotapi.NewMessage(msg.Chat.ID, "Пожалуйста, используйте кнопки меню или нажмите 'назад'"))
 		return
-	case StateCourses:
-		courseWIPHandler(bot, msg)
-		return
+		//case StateCourses:
+		//	courseWIPHandler(bot, msg)
+		//	return
 	}
 
 	startHandler(bot, msg)
@@ -150,13 +183,13 @@ func (bot *Bot) registerHandlers() {
 		// courses
 		"Фигура человека":                courseDetailsHandler,
 		"Форма и тон":                    courseDetailsHandler,
-		"Дизайн существ":                 courseWIPHandler,
-		"Портрет: Скетчинг и стилизация": courseWIPHandler,
-		"Свет и цвет":                    courseWIPHandler,
-		"Динамический портрет":           courseWIPHandler,
-		"Основы рисунка":                 courseWIPHandler,
-		"Мастерская с Евой":              courseWIPHandler,
-		"Анатомия человека":              courseWIPHandler,
+		"Дизайн существ":                 courseDetailsHandler,
+		"Портрет: Скетчинг и стилизация": courseDetailsHandler,
+		"Свет и цвет":                    courseDetailsHandler,
+		"Динамический портрет":           courseDetailsHandler,
+		"Основы рисунка":                 courseDetailsHandler,
+		"Мастерская с Евой":              courseDetailsHandler,
+		"Анатомия человека":              courseDetailsHandler,
 
 		//courses details
 		"Длительность курса":    courseDurationHandler,

@@ -3,9 +3,10 @@ package bot
 type BotState string
 
 const (
-	StateDefault BotState = "default"
-	StateFAQ     BotState = "faq"
-	StateCourses BotState = "courses"
+	StateDefault    BotState = "default"
+	StateFAQ        BotState = "faq"
+	StateCourses    BotState = "courses"
+	StateCourseMenu BotState = "course_menu"
 
 	StateWaitlistChooseCourse BotState = "waitlist_choose_course"
 	StateWaitlistAskFullName  BotState = "waitlist_ask_full_name"
