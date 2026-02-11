@@ -84,9 +84,20 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 }
 
 func (bot *Bot) startPolling() {
+
+	wh, _ := bot.api.GetWebhookInfo()
+	if wh.IsSet() {
+		utils.LogInfo("Webhook detected, deleting it...")
+		_, err := bot.api.Request(tgbotapi.DeleteWebhookConfig{DropPendingUpdates: true})
+		if err != nil {
+			utils.LogError("Failed to delete webhook: %v", err)
+		} else {
+			utils.LogInfo("Webhook deleted successfully")
+		}
+	}
 	utils.LogInfo("Running in POLLING mode")
 	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 10
+	u.Timeout = 60
 	updates := bot.api.GetUpdatesChan(u)
 	for update := range updates {
 		if update.Message != nil {
