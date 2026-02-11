@@ -65,69 +65,85 @@ func faqForeignHandler(bot *Bot, m *tgbotapi.Message) {
 
 // ===== COURSES =====
 
-func courseWIPHandler(b *Bot, m *tgbotapi.Message) {
-	b.sendText(m.Chat.ID, "[этот раздел находится в разработке]")
-}
+//func courseWIPHandler(b *Bot, m *tgbotapi.Message) {
+//	b.sendText(m.Chat.ID, "[этот раздел находится в разработке]")
+//}
+
+//func courseDetailsHandler(b *Bot, m *tgbotapi.Message) {
+//	chatID := m.Chat.ID
+//
+//	userTempCourse[chatID] = m.Text
+//
+//	SetState(chatID, StateCourseDetails)
+//
+//	msg := tgbotapi.NewMessage(chatID,
+//		fmt.Sprintf("Что вы хотите узнать о курсе «%s»?", m.Text))
+//	msg.ReplyMarkup = CourseDetailsMenu()
+//	b.api.Send(msg)
+//}
 
 func courseDetailsHandler(b *Bot, m *tgbotapi.Message) {
 	chatID := m.Chat.ID
+	course := m.Text
 
-	userTempCourse[chatID] = m.Text
-
-	SetState(chatID, StateCourseDetails)
+	// запоминаем выбранный курс
+	userTempCourse[chatID] = course
+	SetState(chatID, StateCourseMenu)
 
 	msg := tgbotapi.NewMessage(chatID,
-		fmt.Sprintf("Что вы хотите узнать о курсе «%s»?", m.Text))
-	msg.ReplyMarkup = CourseDetailsMenu()
+		fmt.Sprintf("Что вы хотите узнать о курсе «%s»?", course))
+	msg.ReplyMarkup = CourseMenu(course)
+
 	b.api.Send(msg)
 }
-func courseDurationHandler(b *Bot, m *tgbotapi.Message) {
-	course := userTempCourse[m.Chat.ID]
 
-	switch course {
-	case "Фигура человека":
-		b.sendText(m.Chat.ID, "Длительность: ")
-	case "Форма и тон":
-		b.sendText(m.Chat.ID, "Длительность: ")
-	default:
-		b.sendText(m.Chat.ID, "Информация пока недоступна. Можете обратиться к администратору, чтобы получить ответ на свой вопрос!")
-	}
-}
-
-func courseStartHandler(b *Bot, m *tgbotapi.Message) {
-	course := userTempCourse[m.Chat.ID]
-
-	switch course {
-	case "Фигура человека":
-		b.sendText(m.Chat.ID, "Ближайший старт: ")
-	case "Форма и тон":
-		b.sendText(m.Chat.ID, "Ближайший старт: ")
-	default:
-		b.sendText(m.Chat.ID, "Информация пока недоступна. Можете обратиться к администратору, чтобы получить ответ на свой вопрос!")
-	}
-}
-
-func courseTeacherHandler(b *Bot, m *tgbotapi.Message) {
-	course := userTempCourse[m.Chat.ID]
-
-	switch course {
-	case "Фигура человека":
-		b.sendText(m.Chat.ID, "Куратор: ")
-	case "Форма и тон":
-		b.sendText(m.Chat.ID, "Куратор: ")
-	default:
-		b.sendText(m.Chat.ID, "Информация пока недоступна.")
-	}
-}
-
-func courseBackHandler(b *Bot, m *tgbotapi.Message) {
-	delete(userTempCourse, m.Chat.ID)
-	SetState(m.Chat.ID, StateCourses)
-
-	msg := tgbotapi.NewMessage(m.Chat.ID, "Выберите курс:")
-	msg.ReplyMarkup = Menus["courses"]
-	b.api.Send(msg)
-}
+//func courseDurationHandler(b *Bot, m *tgbotapi.Message) {
+//	course := userTempCourse[m.Chat.ID]
+//
+//	switch course {
+//	case "Фигура человека":
+//		b.sendText(m.Chat.ID, "Длительность: ")
+//	case "Форма и тон":
+//		b.sendText(m.Chat.ID, "Длительность: ")
+//	default:
+//		b.sendText(m.Chat.ID, "Информация пока недоступна. Можете обратиться к администратору, чтобы получить ответ на свой вопрос!")
+//	}
+//}
+//
+//func courseStartHandler(b *Bot, m *tgbotapi.Message) {
+//	course := userTempCourse[m.Chat.ID]
+//
+//	switch course {
+//	case "Фигура человека":
+//		b.sendText(m.Chat.ID, "Ближайший старт: ")
+//	case "Форма и тон":
+//		b.sendText(m.Chat.ID, "Ближайший старт: ")
+//	default:
+//		b.sendText(m.Chat.ID, "Информация пока недоступна. Можете обратиться к администратору, чтобы получить ответ на свой вопрос!")
+//	}
+//}
+//
+//func courseTeacherHandler(b *Bot, m *tgbotapi.Message) {
+//	course := userTempCourse[m.Chat.ID]
+//
+//	switch course {
+//	case "Фигура человека":
+//		b.sendText(m.Chat.ID, "Куратор: ")
+//	case "Форма и тон":
+//		b.sendText(m.Chat.ID, "Куратор: ")
+//	default:
+//		b.sendText(m.Chat.ID, "Информация пока недоступна.")
+//	}
+//}
+//
+//func courseBackHandler(b *Bot, m *tgbotapi.Message) {
+//	delete(userTempCourse, m.Chat.ID)
+//	SetState(m.Chat.ID, StateCourses)
+//
+//	msg := tgbotapi.NewMessage(m.Chat.ID, "Выберите курс:")
+//	msg.ReplyMarkup = Menus["courses"]
+//	b.api.Send(msg)
+//}
 
 // ===== WAITLIST =====
 

@@ -53,6 +53,8 @@ func faqMenu() tgbotapi.ReplyKeyboardMarkup {
 	)
 }
 
+// courses
+
 func coursesMenu() tgbotapi.ReplyKeyboardMarkup {
 	return tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Фигура человека")),
@@ -67,14 +69,64 @@ func coursesMenu() tgbotapi.ReplyKeyboardMarkup {
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад в главное меню")))
 }
 
-func CourseDetailsMenu() tgbotapi.ReplyKeyboardMarkup {
-	return tgbotapi.NewReplyKeyboard(
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Длительность курса")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Ближайший старт")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Куратор курса")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад к списку курсов")),
-	)
+//func CourseDetailsMenu() tgbotapi.ReplyKeyboardMarkup {
+//	return tgbotapi.NewReplyKeyboard(
+//		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Длительность курса")),
+//		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Ближайший старт")),
+//		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Куратор курса")),
+//		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад к списку курсов")),
+//	)
+//}
+
+func CourseMenu(courseName string) tgbotapi.ReplyKeyboardMarkup {
+	info := CoursesInfo[courseName]
+
+	buttons := [][]tgbotapi.KeyboardButton{}
+
+	if info.Duration != "" {
+		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Длительность курса"),
+		))
+	}
+
+	if info.StartDate != "" {
+		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Ближайший старт"),
+		))
+	}
+
+	if info.Curator != "" {
+		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Куратор курса"),
+		))
+	}
+
+	if info.Schedule != "" {
+		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Программа курса"),
+		))
+	}
+
+	if info.About != "" {
+		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("О чем курс"),
+		))
+	}
+
+	if info.Tools != "" {
+		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Что понадобится"),
+		))
+	}
+
+	buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("Назад к списку курсов"),
+	))
+
+	return tgbotapi.NewReplyKeyboard(buttons...)
 }
+
+// waitlist
 
 func WaitlistCoursesMenu() tgbotapi.ReplyKeyboardMarkup {
 	return tgbotapi.NewReplyKeyboard(
