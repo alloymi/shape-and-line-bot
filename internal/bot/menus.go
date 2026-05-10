@@ -24,7 +24,7 @@ func mainMenu() tgbotapi.ReplyKeyboardMarkup {
 func faqMenu() tgbotapi.ReplyKeyboardMarkup {
 	return tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Подробнее про школу"),
+			tgbotapi.NewKeyboardButton("Подробнее про школу; Контакты"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("Как проходит обучение?"),
@@ -32,8 +32,14 @@ func faqMenu() tgbotapi.ReplyKeyboardMarkup {
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("Как я могу записаться на курс?"),
 		),
+		//tgbotapi.NewKeyboardButtonRow(
+		//	tgbotapi.NewKeyboardButton("Когда стартует ближайший набор на курсы?"),
+		//),
+		//tgbotapi.NewKeyboardButtonRow(
+		//	tgbotapi.NewKeyboardButton("Формат обучения?"),
+		//),
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Формат обучения?"),
+			tgbotapi.NewKeyboardButton("Как и когда происходит оплата курса?"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("Хочу оплатить в рассрочку. Какие условия?"),
@@ -42,10 +48,10 @@ func faqMenu() tgbotapi.ReplyKeyboardMarkup {
 			tgbotapi.NewKeyboardButton("Я из другой страны. Могу ли я записаться на курс? Как проходит оплата?"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("На какой курс я могу записаться со своим уровнем?"),
+			tgbotapi.NewKeyboardButton("Как понять на какой курс я могу записаться со своим уровнем?"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Когда стартует ближайший набор на курсы?"),
+			tgbotapi.NewKeyboardButton("Возможно ли взять перерыв во время курса?"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("Назад в главное меню"),
@@ -57,15 +63,15 @@ func faqMenu() tgbotapi.ReplyKeyboardMarkup {
 
 func coursesMenu() tgbotapi.ReplyKeyboardMarkup {
 	return tgbotapi.NewReplyKeyboard(
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Фигура человека")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Форма и тон")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Дизайн существ")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Портрет: Скетчинг и стилизация")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Свет и цвет")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Динамический портрет")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Основы рисунка")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Форма и тон")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Свет и цвет")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Портрет: Скетчинг и стилизация")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Скетчинг: тело, движение, одежда")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Динамический портрет")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Фигура человека")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Мастерская с Евой")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Анатомия человека")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Дизайн существ")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад в главное меню")))
 }
 
@@ -83,23 +89,28 @@ func CourseMenu(courseName string) tgbotapi.ReplyKeyboardMarkup {
 
 	buttons := [][]tgbotapi.KeyboardButton{}
 
-	if info.Duration != "" {
+	if info.MainInfo != "" {
 		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Длительность курса"),
+			tgbotapi.NewKeyboardButton("Основная информация"),
 		))
 	}
+	//if info.Duration != "" {
+	//	buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+	//		tgbotapi.NewKeyboardButton("Длительность курса"),
+	//	))
+	//}
 
-	if info.StartDate != "" {
-		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Ближайший старт"),
-		))
-	}
+	//if info.StartDate != "" {
+	//	buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+	//		tgbotapi.NewKeyboardButton("Ближайший старт"),
+	//	))
+	//}
 
-	if info.Curator != "" {
-		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Куратор курса"),
-		))
-	}
+	//if info.Curator != "" {
+	//	buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+	//		tgbotapi.NewKeyboardButton("Куратор курса"),
+	//	))
+	//}
 
 	if info.Schedule != "" {
 		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
@@ -119,6 +130,12 @@ func CourseMenu(courseName string) tgbotapi.ReplyKeyboardMarkup {
 		))
 	}
 
+	if info.WhereToFindWorks != "" {
+		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Где посмотреть работы куратора и студентов?"),
+		))
+	}
+
 	buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
 		tgbotapi.NewKeyboardButton("Назад к списку курсов"),
 	))
@@ -130,15 +147,15 @@ func CourseMenu(courseName string) tgbotapi.ReplyKeyboardMarkup {
 
 func WaitlistCoursesMenu() tgbotapi.ReplyKeyboardMarkup {
 	return tgbotapi.NewReplyKeyboard(
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Фигура человека")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Форма и тон")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Дизайн существ")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Портрет: Скетчинг и стилизация")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Свет и цвет")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Динамический портрет")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Основы рисунка")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Форма и тон")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Свет и цвет")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Портрет: Скетчинг и стилизация")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Скетчинг: тело, движение, одежда")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Динамический портрет")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Фигура человека")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Мастерская с Евой")),
-		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Анатомия человека")),
+		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Дизайн существ")),
 		tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("Назад в главное меню")))
 }
 

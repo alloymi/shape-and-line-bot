@@ -4,6 +4,14 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+func courseMainInfoHandler(bot *Bot, msg *tgbotapi.Message) {
+	chatID := msg.Chat.ID
+	course := userTempCourse[chatID]
+	info := CoursesInfo[course]
+
+	bot.api.Send(tgbotapi.NewMessage(chatID, info.MainInfo))
+}
+
 func courseDurationHandler(bot *Bot, msg *tgbotapi.Message) {
 	chatID := msg.Chat.ID
 	course := userTempCourse[chatID]
@@ -55,6 +63,14 @@ func courseToolsHandler(bot *Bot, msg *tgbotapi.Message) {
 	info := CoursesInfo[course]
 
 	bot.api.Send(tgbotapi.NewMessage(chatID, info.Tools))
+}
+
+func WhereToFindWorksHandler(bot *Bot, msg *tgbotapi.Message) {
+	chatID := msg.Chat.ID
+	course := userTempCourse[chatID]
+	info := CoursesInfo[course]
+
+	bot.api.Send(tgbotapi.NewMessage(chatID, info.WhereToFindWorks))
 }
 
 func courseBackHandler(bot *Bot, msg *tgbotapi.Message) {

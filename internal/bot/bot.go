@@ -73,17 +73,21 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 
 		switch msg.Text {
 
-		case "Длительность курса":
-			bot.api.Send(tgbotapi.NewMessage(chatID, info.Duration))
+		case "Основная информация":
+			bot.api.Send(tgbotapi.NewMessage(chatID, info.MainInfo))
 			return
 
-		case "Ближайший старт":
-			bot.api.Send(tgbotapi.NewMessage(chatID, info.StartDate))
-			return
+		//case "Длительность курса":
+		//	bot.api.Send(tgbotapi.NewMessage(chatID, info.Duration))
+		//	return
 
-		case "Куратор курса":
-			bot.api.Send(tgbotapi.NewMessage(chatID, info.Curator))
-			return
+		//case "Ближайший старт":
+		//	bot.api.Send(tgbotapi.NewMessage(chatID, info.StartDate))
+		//	return
+
+		//case "Куратор курса":
+		//	bot.api.Send(tgbotapi.NewMessage(chatID, info.Curator))
+		//	return
 
 		case "Программа курса":
 			bot.api.Send(tgbotapi.NewMessage(chatID, info.Schedule))
@@ -95,6 +99,10 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 
 		case "Что понадобится":
 			bot.api.Send(tgbotapi.NewMessage(chatID, info.Tools))
+			return
+
+		case "Где посмотреть работы куратора и студентов?":
+			bot.api.Send(tgbotapi.NewMessage(chatID, info.WhereToFindWorks))
 			return
 
 		case "Назад к выбору курса":
@@ -194,29 +202,38 @@ func (bot *Bot) registerHandlers() {
 		"Назад в главное меню": startHandler,
 
 		// faq
-		"Как проходит обучение?":                    faqHowHandler,
-		"Формат обучения?":                          faqFormatHandler,
-		"Хочу оплатить в рассрочку. Какие условия?": faqInstallmentHandler,
+		"Подробнее про школу":            faqAboutHandler,
+		"Как проходит обучение?":         faqFormatHandler,
+		"Как я могу записаться на курс?": faqHowToRegisterHandler,
+		//"Когда стартует ближайший набор на курсы?"
+		//"Формат обучения?":                                                     faqFormatHandler,
+		"Как и когда происходит оплата курса?":                                   faqWhenToPayHandler,
+		"Хочу оплатить в рассрочку. Какие условия?":                              faqInstallmentHandler,
 		"Я из другой страны. Могу ли я записаться на курс? Как проходит оплата?": faqForeignHandler,
+		"Как понять на какой курс я могу записаться со своим уровнем?":           faqLevelHandler,
+		"Возможно ли взять перерыв во время курса?":                              faqPauseHandler,
+		"Выдается ли сертификат по окончании обучения?":                          faqCertificateHandler,
 
 		// courses
-		"Фигура человека":                courseDetailsHandler,
-		"Форма и тон":                    courseDetailsHandler,
-		"Дизайн существ":                 courseDetailsHandler,
-		"Портрет: Скетчинг и стилизация": courseDetailsHandler,
-		"Свет и цвет":                    courseDetailsHandler,
-		"Динамический портрет":           courseDetailsHandler,
-		"Основы рисунка":                 courseDetailsHandler,
-		"Мастерская с Евой":              courseDetailsHandler,
-		"Анатомия человека":              courseDetailsHandler,
+		"Основы рисунка":                   courseDetailsHandler,
+		"Форма и тон":                      courseDetailsHandler,
+		"Свет и цвет":                      courseDetailsHandler,
+		"Портрет: Скетчинг и стилизация":   courseDetailsHandler,
+		"Скетчинг: тело, движение, одежда": courseDetailsHandler,
+		"Динамический портрет":             courseDetailsHandler,
+		"Фигура человека":                  courseDetailsHandler,
+		"Мастерская с Евой":                courseDetailsHandler,
+		"Дизайн существ":                   courseDetailsHandler,
 
 		//courses details
-		"Длительность курса": courseDurationHandler,
-		"Ближайший старт":    courseStartHandler,
-		"Куратор курса":      courseTeacherHandler,
-		"Программа курса":    courseScheduleHandler,
-		"О чем курс":         courseAboutHandler,
-		"Что понадобится":    courseToolsHandler,
+		"Основная информация": courseMainInfoHandler,
+		//"Длительность курса": courseDurationHandler,
+		//"Ближайший старт":    courseStartHandler,
+		//"Куратор курса":      courseTeacherHandler,
+		"Программа курса": courseScheduleHandler,
+		"О чем курс":      courseAboutHandler,
+		"Что понадобится": courseToolsHandler,
+		"Где посмотреть работы куратора и студентов?": WhereToFindWorksHandler,
 
 		"Назад к списку курсов": courseBackHandler,
 
@@ -231,15 +248,15 @@ func (bot *Bot) registerHandlers() {
 
 func isCourseName(s string) bool {
 	courses := []string{
-		"Фигура человека",
-		"Форма и тон",
-		"Дизайн существ",
-		"Портрет: Скетчинг и стилизация",
-		"Свет и цвет",
-		"Динамический портрет",
 		"Основы рисунка",
+		"Форма и тон",
+		"Свет и цвет",
+		"Портрет: Скетчинг и стилизация",
+		"Скетчинг: тело, движение, одежда",
+		"Динамический портрет",
+		"Фигура человека",
 		"Мастерская с Евой",
-		"Анатомия человека",
+		"Дизайн существ",
 	}
 	for _, c := range courses {
 		if s == c {
