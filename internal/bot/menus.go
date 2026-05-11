@@ -54,6 +54,9 @@ func faqMenu() tgbotapi.ReplyKeyboardMarkup {
 			tgbotapi.NewKeyboardButton("Возможно ли взять перерыв во время курса?"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Выдается ли сертификат по окончании обучения?"),
+		),
+		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("Назад в главное меню"),
 		),
 	)
