@@ -24,7 +24,7 @@ func mainMenu() tgbotapi.ReplyKeyboardMarkup {
 func faqMenu() tgbotapi.ReplyKeyboardMarkup {
 	return tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Подробнее про школу; Контакты"),
+			tgbotapi.NewKeyboardButton("Подробнее про школу"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("Как проходит обучение?"),
@@ -106,11 +106,11 @@ func CourseMenu(courseName string) tgbotapi.ReplyKeyboardMarkup {
 	//	))
 	//}
 
-	//if info.Curator != "" {
-	//	buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
-	//		tgbotapi.NewKeyboardButton("Куратор курса"),
-	//	))
-	//}
+	if info.Curator != "" {
+		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Куратор курса"),
+		))
+	}
 
 	if info.Schedule != "" {
 		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
@@ -127,6 +127,11 @@ func CourseMenu(courseName string) tgbotapi.ReplyKeyboardMarkup {
 	if info.Tools != "" {
 		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("Что понадобится"),
+		))
+	}
+	if info.ForWhom != "" {
+		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Для кого подходит курс"),
 		))
 	}
 

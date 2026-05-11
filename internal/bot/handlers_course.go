@@ -57,6 +57,14 @@ func courseAboutHandler(bot *Bot, msg *tgbotapi.Message) {
 	bot.api.Send(tgbotapi.NewMessage(chatID, info.About))
 }
 
+func courseForWhomHandler(bot *Bot, msg *tgbotapi.Message) {
+	chatID := msg.Chat.ID
+	course := userTempCourse[chatID]
+	info := CoursesInfo[course]
+
+	bot.api.Send(tgbotapi.NewMessage(chatID, info.ForWhom))
+}
+
 func courseToolsHandler(bot *Bot, msg *tgbotapi.Message) {
 	chatID := msg.Chat.ID
 	course := userTempCourse[chatID]
