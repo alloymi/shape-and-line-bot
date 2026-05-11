@@ -85,9 +85,9 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 		//	bot.api.Send(tgbotapi.NewMessage(chatID, info.StartDate))
 		//	return
 
-		//case "Куратор курса":
-		//	bot.api.Send(tgbotapi.NewMessage(chatID, info.Curator))
-		//	return
+		case "Куратор курса":
+			bot.api.Send(tgbotapi.NewMessage(chatID, info.Curator))
+			return
 
 		case "Программа курса":
 			bot.api.Send(tgbotapi.NewMessage(chatID, info.Schedule))
@@ -98,6 +98,10 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 			return
 
 		case "Что понадобится":
+			bot.api.Send(tgbotapi.NewMessage(chatID, info.Tools))
+			return
+
+		case "Для кого подходит курс":
 			bot.api.Send(tgbotapi.NewMessage(chatID, info.Tools))
 			return
 
