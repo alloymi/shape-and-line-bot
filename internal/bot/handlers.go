@@ -131,11 +131,19 @@ func courseDetailsHandler(b *Bot, m *tgbotapi.Message) {
 	userTempCourse[chatID] = course
 	SetState(chatID, StateCourseMenu)
 
-	msg := tgbotapi.NewMessage(chatID,
-		fmt.Sprintf("Что вы хотите узнать о курсе «%s»?", course))
-	msg.ReplyMarkup = CourseMenu(course)
+	img, _ := CoursesInfo[course]
 
-	b.api.Send(msg)
+	imgMsg := tgbotapi.NewPhoto(chatID, tgbotapi.FileURL(img.ImageURL))
+	imgMsg.Caption = fmt.Sprintf("Что вы хотите узнать о курсе «%s»?", course)
+	imgMsg.ReplyMarkup = CourseMenu(course)
+
+	b.api.Send(imgMsg)
+
+	//msg := tgbotapi.NewMessage(chatID,
+	//	fmt.Sprintf("Что вы хотите узнать о курсе «%s»?", course))
+	//msg.ReplyMarkup = CourseMenu(course)
+	//
+	//b.api.Send(msg)
 }
 
 //func courseDurationHandler(b *Bot, m *tgbotapi.Message) {
