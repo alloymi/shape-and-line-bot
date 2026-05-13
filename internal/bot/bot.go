@@ -77,16 +77,8 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 			bot.api.Send(tgbotapi.NewMessage(chatID, info.MainInfo))
 			return
 
-		//case "Длительность курса":
-		//	bot.api.Send(tgbotapi.NewMessage(chatID, info.Duration))
-		//	return
-
-		//case "Ближайший старт":
-		//	bot.api.Send(tgbotapi.NewMessage(chatID, info.StartDate))
-		//	return
-
-		case "Куратор курса":
-			bot.api.Send(tgbotapi.NewMessage(chatID, info.Curator))
+		case "Доступные тарифы":
+			bot.api.Send(tgbotapi.NewMessage(chatID, info.Tariffs))
 			return
 
 		case "Программа курса":
@@ -206,11 +198,9 @@ func (bot *Bot) registerHandlers() {
 		"Назад в главное меню": startHandler,
 
 		// faq
-		"Подробнее про школу":            faqAboutHandler,
-		"Как проходит обучение?":         faqFormatHandler,
-		"Как я могу записаться на курс?": faqHowToRegisterHandler,
-		//"Когда стартует ближайший набор на курсы?"
-		//"Формат обучения?":                                                     faqFormatHandler,
+		"Подробнее про школу":                                                    faqAboutHandler,
+		"Как проходит обучение?":                                                 faqFormatHandler,
+		"Как я могу записаться на курс?":                                         faqHowToRegisterHandler,
 		"Как и когда происходит оплата курса?":                                   faqWhenToPayHandler,
 		"Хочу оплатить в рассрочку. Какие условия?":                              faqInstallmentHandler,
 		"Я из другой страны. Могу ли я записаться на курс? Как проходит оплата?": faqForeignHandler,
@@ -230,10 +220,8 @@ func (bot *Bot) registerHandlers() {
 		"Дизайн существ":                   courseDetailsHandler,
 
 		//courses details
-		"Основная информация": courseMainInfoHandler,
-		//"Длительность курса": courseDurationHandler,
-		//"Ближайший старт":    courseStartHandler,
-		"Куратор курса":          courseTeacherHandler,
+		"Основная информация":    courseMainInfoHandler,
+		"Доступные тарифы":       courseTeacherHandler,
 		"Для кого подходит курс": courseForWhomHandler,
 		"Программа курса":        courseScheduleHandler,
 		"О чем курс":             courseAboutHandler,

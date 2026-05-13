@@ -7,6 +7,7 @@ type CourseInfo struct {
 	Duration         string
 	StartDate        string
 	Curator          string
+	Tariffs          string
 	Topics           string
 	ForWhom          string
 	Tools            string

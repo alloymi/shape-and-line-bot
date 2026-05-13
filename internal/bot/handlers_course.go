@@ -12,33 +12,12 @@ func courseMainInfoHandler(bot *Bot, msg *tgbotapi.Message) {
 	bot.api.Send(tgbotapi.NewMessage(chatID, info.MainInfo))
 }
 
-func courseDurationHandler(bot *Bot, msg *tgbotapi.Message) {
+func courseTariffsHandler(bot *Bot, msg *tgbotapi.Message) {
 	chatID := msg.Chat.ID
 	course := userTempCourse[chatID]
 	info := CoursesInfo[course]
 
-	bot.api.Send(tgbotapi.NewMessage(chatID, info.Duration))
-}
-
-func courseStartHandler(bot *Bot, msg *tgbotapi.Message) {
-	chatID := msg.Chat.ID
-	course := userTempCourse[chatID]
-	info := CoursesInfo[course]
-
-	//if info.StartDate == "" {
-	//	bot.api.Send(tgbotapi.NewMessage(chatID, "Информация о старте пока недоступна"))
-	//	return
-	//}
-
-	bot.api.Send(tgbotapi.NewMessage(chatID, info.StartDate))
-}
-
-func courseTeacherHandler(bot *Bot, msg *tgbotapi.Message) {
-	chatID := msg.Chat.ID
-	course := userTempCourse[chatID]
-	info := CoursesInfo[course]
-
-	bot.api.Send(tgbotapi.NewMessage(chatID, info.Curator))
+	bot.api.Send(tgbotapi.NewMessage(chatID, info.Tariffs))
 }
 
 func courseScheduleHandler(bot *Bot, msg *tgbotapi.Message) {

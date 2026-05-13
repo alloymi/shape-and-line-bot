@@ -57,6 +57,9 @@ func faqMenu() tgbotapi.ReplyKeyboardMarkup {
 			tgbotapi.NewKeyboardButton("Выдается ли сертификат по окончании обучения?"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Для кого подходит курс"),
+		),
+		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("Назад в главное меню"),
 		),
 	)
