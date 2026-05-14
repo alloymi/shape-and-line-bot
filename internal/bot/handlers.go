@@ -155,21 +155,25 @@ func startWaitlistHandler(b *Bot, msg *tgbotapi.Message) {
 	b.api.Send(resp)
 }
 
-//func waitlistChooseCourseHandler(b *Bot, msg *tgbotapi.Message) {
-//	chatID := msg.Chat.ID
-//
-//	SetState(chatID, StateWaitlistAskFullName)
-//
-//	//cleanName := strings.TrimPrefix(msg.Text, "WL:")
-//	//userTempCourse[chatID] = cleanName
-//	userTempCourse[chatID] = msg.Text
-//
-//	resp := tgbotapi.NewMessage(chatID, "Пожалуйста введите ваше ФИО через пробел:")
-//	resp.ReplyMarkup = WaitlistProgressMenu()
-//
-//	b.api.Send(resp)
-//
-//}
+func waitlistChooseCourseHandler(b *Bot, msg *tgbotapi.Message) {
+	chatID := msg.Chat.ID
+	course := msg.Text
+	SetState(chatID, StateWaitlistAskFullName)
+
+	//cleanName := strings.TrimPrefix(msg.Text, "WL:")
+	//userTempCourse[chatID] = cleanName
+	//userTempCourse[chatID] = msg.Text
+
+	if course == "Назад в главное меню" {
+		resetToMainMenu(b, chatID)
+		return
+	}
+
+	resp := tgbotapi.NewMessage(chatID, "Пожалуйста введите ваше ФИО через пробел:")
+	resp.ReplyMarkup = WaitlistProgressMenu()
+
+	b.api.Send(resp)
+}
 
 func waitlistFullNameHandler(b *Bot, msg *tgbotapi.Message) {
 	chatID := msg.Chat.ID

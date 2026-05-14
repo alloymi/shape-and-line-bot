@@ -12,7 +12,7 @@ const (
 	StateWaitlistAskFullName  BotState = "waitlist_ask_full_name"
 	StateWaitlistAskEmail     BotState = "waitlist_ask_email"
 
-	StateCourseDetails BotState = "course_details"
+	//StateCourseDetails BotState = "course_details"
 )
 
 var userState = map[int64]BotState{}

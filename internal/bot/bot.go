@@ -221,7 +221,7 @@ func (bot *Bot) registerHandlers() {
 
 		//courses details
 		"Основная информация":    courseMainInfoHandler,
-		"Доступные тарифы":       courseTeacherHandler,
+		"Доступные тарифы":       courseTariffsHandler,
 		"Для кого подходит курс": courseForWhomHandler,
 		"Программа курса":        courseScheduleHandler,
 		"О чем курс":             courseAboutHandler,
