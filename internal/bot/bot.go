@@ -94,7 +94,7 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 			return
 
 		case "Для кого подходит курс":
-			bot.api.Send(tgbotapi.NewMessage(chatID, info.Tools))
+			bot.api.Send(tgbotapi.NewMessage(chatID, info.ForWhom))
 			return
 
 		case "Где посмотреть работы куратора и студентов?":
