@@ -211,7 +211,7 @@ func (bot *Bot) registerHandlers() {
 		"/help":  startHandler,
 
 		// main menu
-		"Частые вопросы":       menuHandler("faq", StateFAQ),
+		"Частые вопросы":       faqHandler,
 		"Все курсы":            menuHandler("courses", StateCourses),
 		"Назад в главное меню": startHandler,
 
