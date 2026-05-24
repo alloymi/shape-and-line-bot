@@ -57,6 +57,45 @@ func startHandler(bot *Bot, m *tgbotapi.Message) {
 	}
 }
 
+func faqHandler(b *Bot, msg *tgbotapi.Message) {
+	SetState(msg.Chat.ID, StateFAQ)
+
+	resp := tgbotapi.NewMessage(msg.Chat.ID, "Выберите категорию вопросов:")
+	resp.ReplyMarkup = faqCategoriesMenu()
+	b.api.Send(resp)
+}
+
+func faqCategoryHandler(b *Bot, msg *tgbotapi.Message) {
+	chatID := msg.Chat.ID
+	text := msg.Text
+
+	switch text {
+	case "О школе":
+		SetState(chatID, StateFAQAbout)
+		resp := tgbotapi.NewMessage(chatID, "Вопросы о школе:")
+		resp.ReplyMarkup = faqAboutSchoolMenu()
+		b.api.Send(resp)
+
+	case "Вопросы об оплате":
+		SetState(chatID, StateFAQPayment)
+		resp := tgbotapi.NewMessage(chatID, "Вопросы об оплате:")
+		resp.ReplyMarkup = faqPaymentMenu()
+		b.api.Send(resp)
+
+	case "Вопросы об обучении":
+		SetState(chatID, StateFAQStudy)
+		resp := tgbotapi.NewMessage(chatID, "Вопросы об обучении:")
+		resp.ReplyMarkup = faqStudyMenu()
+		b.api.Send(resp)
+
+	case "Назад в главное меню":
+		resp := tgbotapi.NewMessage(chatID, "Возврат в главное меню:")
+		resp.ReplyMarkup = Menus["main"]
+		b.api.Send(resp)
+		SetState(chatID, StateDefault)
+	}
+}
+
 // ===== FAQ ANSWERS =====
 
 func faqAboutHandler(bot *Bot, m *tgbotapi.Message) {

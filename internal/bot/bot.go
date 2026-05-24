@@ -111,6 +111,26 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 		}
 	}
 
+	if GetState(msg.Chat.ID) == StateFAQPayment ||
+		GetState(msg.Chat.ID) == StateFAQStudy ||
+		GetState(msg.Chat.ID) == StateFAQAbout {
+
+		// Если пользователь нажал "назад" — показываем категории
+		if msg.Text == "назад" {
+			SetState(msg.Chat.ID, StateFAQ)
+			resp := tgbotapi.NewMessage(msg.Chat.ID, "Выберите категорию вопросов:")
+			resp.ReplyMarkup = faqCategoriesMenu()
+			bot.api.Send(resp)
+			return
+		}
+
+		// Иначе — передаём обработку в роутер (конкретные вопросы)
+		if h, ok := bot.r.Resolve(msg.Text); ok {
+			h(bot, msg)
+			return
+		}
+	}
+
 	if h, ok := bot.r.Resolve(msg.Text); ok {
 		h(bot, msg)
 		return
@@ -198,6 +218,10 @@ func (bot *Bot) registerHandlers() {
 		"Назад в главное меню": startHandler,
 
 		// faq
+		"О школе":             faqCategoryHandler,
+		"Вопросы об оплате":   faqCategoryHandler,
+		"Вопросы об обучении": faqCategoryHandler,
+
 		"Подробнее про школу":                                                    faqAboutHandler,
 		"Как проходит обучение?":                                                 faqFormatHandler,
 		"Как я могу записаться на курс?":                                         faqHowToRegisterHandler,

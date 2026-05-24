@@ -3,8 +3,8 @@ package bot
 import tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 
 var Menus = map[string]tgbotapi.ReplyKeyboardMarkup{
-	"main":    mainMenu(),
-	"faq":     faqMenu(),
+	"main": mainMenu(),
+	//"faq":     faqMenu(),
 	"courses": coursesMenu(),
 }
 
@@ -20,24 +20,25 @@ func mainMenu() tgbotapi.ReplyKeyboardMarkup {
 			tgbotapi.NewKeyboardButton("Записаться в лист ожидания")),
 	)
 }
-
-func faqMenu() tgbotapi.ReplyKeyboardMarkup {
+func faqCategoriesMenu() tgbotapi.ReplyKeyboardMarkup {
 	return tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Подробнее про школу"),
+			tgbotapi.NewKeyboardButton("О школе"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Как проходит обучение?"),
+			tgbotapi.NewKeyboardButton("Вопросы об оплате"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Как я могу записаться на курс?"),
+			tgbotapi.NewKeyboardButton("Вопросы об обучении"),
 		),
-		//tgbotapi.NewKeyboardButtonRow(
-		//	tgbotapi.NewKeyboardButton("Когда стартует ближайший набор на курсы?"),
-		//),
-		//tgbotapi.NewKeyboardButtonRow(
-		//	tgbotapi.NewKeyboardButton("Формат обучения?"),
-		//),
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Назад в главное меню"),
+		),
+	)
+}
+
+func faqPaymentMenu() tgbotapi.ReplyKeyboardMarkup {
+	return tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("Как и когда происходит оплата курса?"),
 		),
@@ -48,7 +49,15 @@ func faqMenu() tgbotapi.ReplyKeyboardMarkup {
 			tgbotapi.NewKeyboardButton("Я из другой страны. Могу ли я записаться на курс? Как проходит оплата?"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Как понять на какой курс я могу записаться со своим уровнем?"),
+			tgbotapi.NewKeyboardButton("назад"),
+		),
+	)
+}
+
+func faqStudyMenu() tgbotapi.ReplyKeyboardMarkup {
+	return tgbotapi.NewReplyKeyboard(
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Как проходит обучение?"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("Возможно ли взять перерыв во время курса?"),
@@ -57,10 +66,68 @@ func faqMenu() tgbotapi.ReplyKeyboardMarkup {
 			tgbotapi.NewKeyboardButton("Выдается ли сертификат по окончании обучения?"),
 		),
 		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Назад в главное меню"),
+			tgbotapi.NewKeyboardButton("назад"),
 		),
 	)
 }
+
+func faqAboutSchoolMenu() tgbotapi.ReplyKeyboardMarkup {
+	return tgbotapi.NewReplyKeyboard(
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Подробнее про школу"),
+		),
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Как понять на какой курс я могу записаться со своим уровнем?"),
+		),
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("Как я могу записаться на курс?"),
+		),
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("назад"),
+		),
+	)
+}
+
+//func faqMenu() tgbotapi.ReplyKeyboardMarkup {
+//	return tgbotapi.NewReplyKeyboard(
+//		tgbotapi.NewKeyboardButtonRow(
+//			tgbotapi.NewKeyboardButton("Подробнее про школу"),
+//		),
+//		tgbotapi.NewKeyboardButtonRow(
+//			tgbotapi.NewKeyboardButton("Как проходит обучение?"),
+//		),
+//		tgbotapi.NewKeyboardButtonRow(
+//			tgbotapi.NewKeyboardButton("Как я могу записаться на курс?"),
+//		),
+//		//tgbotapi.NewKeyboardButtonRow(
+//		//	tgbotapi.NewKeyboardButton("Когда стартует ближайший набор на курсы?"),
+//		//),
+//		//tgbotapi.NewKeyboardButtonRow(
+//		//	tgbotapi.NewKeyboardButton("Формат обучения?"),
+//		//),
+//		tgbotapi.NewKeyboardButtonRow(
+//			tgbotapi.NewKeyboardButton("Как и когда происходит оплата курса?"),
+//		),
+//		tgbotapi.NewKeyboardButtonRow(
+//			tgbotapi.NewKeyboardButton("Хочу оплатить в рассрочку. Какие условия?"),
+//		),
+//		tgbotapi.NewKeyboardButtonRow(
+//			tgbotapi.NewKeyboardButton("Я из другой страны. Могу ли я записаться на курс? Как проходит оплата?"),
+//		),
+//		tgbotapi.NewKeyboardButtonRow(
+//			tgbotapi.NewKeyboardButton("Как понять на какой курс я могу записаться со своим уровнем?"),
+//		),
+//		tgbotapi.NewKeyboardButtonRow(
+//			tgbotapi.NewKeyboardButton("Возможно ли взять перерыв во время курса?"),
+//		),
+//		tgbotapi.NewKeyboardButtonRow(
+//			tgbotapi.NewKeyboardButton("Выдается ли сертификат по окончании обучения?"),
+//		),
+//		tgbotapi.NewKeyboardButtonRow(
+//			tgbotapi.NewKeyboardButton("Назад в главное меню"),
+//		),
+//	)
+//}
 
 // courses
 

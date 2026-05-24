@@ -5,6 +5,9 @@ type BotState string
 const (
 	StateDefault    BotState = "default"
 	StateFAQ        BotState = "faq"
+	StateFAQPayment BotState = "faq_payment"
+	StateFAQStudy   BotState = "faq_study"
+	StateFAQAbout   BotState = "faq_about"
 	StateCourses    BotState = "courses"
 	StateCourseMenu BotState = "course_menu"
 
