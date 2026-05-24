@@ -115,7 +115,6 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 		GetState(msg.Chat.ID) == StateFAQStudy ||
 		GetState(msg.Chat.ID) == StateFAQAbout {
 
-		// Если пользователь нажал "назад" — показываем категории
 		if msg.Text == "назад" {
 			SetState(msg.Chat.ID, StateFAQ)
 			resp := tgbotapi.NewMessage(msg.Chat.ID, "Выберите категорию вопросов:")
@@ -124,7 +123,6 @@ func (bot *Bot) processMessage(msg *tgbotapi.Message) {
 			return
 		}
 
-		// Иначе — передаём обработку в роутер (конкретные вопросы)
 		if h, ok := bot.r.Resolve(msg.Text); ok {
 			h(bot, msg)
 			return

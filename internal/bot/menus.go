@@ -3,9 +3,9 @@ package bot
 import tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 
 var Menus = map[string]tgbotapi.ReplyKeyboardMarkup{
-	"main": mainMenu(),
-	//"faq":     faqMenu(),
-	"courses": coursesMenu(),
+	"main":          mainMenu(),
+	"faqCategories": faqCategoriesMenu(),
+	"courses":       coursesMenu(),
 }
 
 func mainMenu() tgbotapi.ReplyKeyboardMarkup {
