@@ -109,9 +109,9 @@ func CourseMenu(courseName string) tgbotapi.ReplyKeyboardMarkup {
 	//	))
 	//}
 
-	if info.Curator != "" {
+	if info.Tariffs != "" {
 		buttons = append(buttons, tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("Куратор курса"),
+			tgbotapi.NewKeyboardButton("Доступные тарифы"),
 		))
 	}
 
