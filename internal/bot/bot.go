@@ -298,14 +298,187 @@ func resetToMainMenu(b *Bot, chatID int64) {
 	b.api.Send(msg)
 }
 
+//func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
+//	if callback == nil {
+//		return
+//	}
+//
+//	log.Printf("CALLBACK DATA: %q", callback.Data)
+//
+//	if callback.Message == nil {
+//		return
+//	}
+//
+//	_, _ = bot.api.Request(tgbotapi.NewCallback(callback.ID, ""))
+//
+//	chatID := callback.Message.Chat.ID
+//	data := callback.Data
+//
+//	msg := *callback.Message
+//	msg.Text = data
+//
+//	switch {
+//
+//	// ===== MAIN MENU =====
+//
+//	case data == "main":
+//		startHandler(bot, &msg)
+//
+//	// ===== FAQ =====
+//
+//	case data == "faq":
+//		faqHandler(bot, &msg)
+//
+//	case data == "faq_about":
+//		msg.Text = "О школе"
+//		faqCategoryHandler(bot, &msg)
+//
+//	case data == "faq_payment":
+//		msg.Text = "Вопросы об оплате"
+//		faqCategoryHandler(bot, &msg)
+//
+//	case data == "faq_study":
+//		msg.Text = "Вопросы об обучении"
+//		faqCategoryHandler(bot, &msg)
+//
+//	// FAQ — answers
+//
+//	case data == "faq_about_info":
+//		faqAboutHandler(bot, &msg)
+//
+//		resp := tgbotapi.NewMessage(chatID, "Вопросы о школе:")
+//		resp.ReplyMarkup = faqAboutSchoolInlineMenu()
+//		bot.api.Send(resp)
+//
+//	case data == "faq_level":
+//		faqLevelHandler(bot, &msg)
+//
+//		resp := tgbotapi.NewMessage(chatID, "Вопросы о школе:")
+//		resp.ReplyMarkup = faqAboutSchoolInlineMenu()
+//		bot.api.Send(resp)
+//
+//	case data == "faq_register":
+//		faqHowToRegisterHandler(bot, &msg)
+//
+//		resp := tgbotapi.NewMessage(chatID, "Вопросы о школе:")
+//		resp.ReplyMarkup = faqAboutSchoolInlineMenu()
+//		bot.api.Send(resp)
+//
+//	case data == "faq_pay_when":
+//		faqWhenToPayHandler(bot, &msg)
+//
+//		resp := tgbotapi.NewMessage(chatID, "Вопросы об оплате:")
+//		resp.ReplyMarkup = faqPaymentInlineMenu()
+//		bot.api.Send(resp)
+//
+//	case data == "faq_installment":
+//		faqInstallmentHandler(bot, &msg)
+//
+//		resp := tgbotapi.NewMessage(chatID, "Вопросы об оплате:")
+//		resp.ReplyMarkup = faqPaymentInlineMenu()
+//		bot.api.Send(resp)
+//
+//	case data == "faq_foreign":
+//		faqForeignHandler(bot, &msg)
+//
+//		resp := tgbotapi.NewMessage(chatID, "Вопросы об оплате:")
+//		resp.ReplyMarkup = faqPaymentInlineMenu()
+//		bot.api.Send(resp)
+//
+//	case data == "faq_format":
+//		faqFormatHandler(bot, &msg)
+//
+//		resp := tgbotapi.NewMessage(chatID, "Вопросы об обучении:")
+//		resp.ReplyMarkup = faqStudyInlineMenu()
+//		bot.api.Send(resp)
+//
+//	case data == "faq_pause":
+//		faqPauseHandler(bot, &msg)
+//
+//		resp := tgbotapi.NewMessage(chatID, "Вопросы об обучении:")
+//		resp.ReplyMarkup = faqStudyInlineMenu()
+//		bot.api.Send(resp)
+//
+//	case data == "faq_certificate":
+//		faqCertificateHandler(bot, &msg)
+//
+//		resp := tgbotapi.NewMessage(chatID, "Вопросы об обучении:")
+//		resp.ReplyMarkup = faqStudyInlineMenu()
+//		bot.api.Send(resp)
+//
+//	// ===== COURSES =====
+//
+//	case data == "courses":
+//		SetState(chatID, StateCourses)
+//
+//		markup := coursesInlineMenu()
+//
+//		edit := tgbotapi.NewEditMessageText(
+//			chatID,
+//			callback.Message.MessageID,
+//			"Выберите курс:",
+//		)
+//		edit.ReplyMarkup = &markup
+//
+//		bot.api.Send(edit)
+//
+//	case strings.HasPrefix(data, "course:"):
+//		course := strings.TrimPrefix(data, "course:")
+//
+//		msg.Text = course
+//		courseDetailsHandler(bot, &msg)
+//
+//	// ===== COURSE INFO =====
+//
+//	case data == "courseinfo:main":
+//		courseMainInfoHandler(bot, &msg)
+//
+//	case data == "courseinfo:tariffs":
+//		courseTariffsHandler(bot, &msg)
+//
+//	case data == "courseinfo:schedule":
+//		courseScheduleHandler(bot, &msg)
+//
+//	case data == "courseinfo:about":
+//		courseAboutHandler(bot, &msg)
+//
+//	case data == "courseinfo:tools":
+//		courseToolsHandler(bot, &msg)
+//
+//	case data == "courseinfo:forwhom":
+//		courseForWhomHandler(bot, &msg)
+//
+//	case data == "courseinfo:works":
+//		WhereToFindWorksHandler(bot, &msg)
+//
+//	// ===== WAITLIST =====
+//
+//	case data == "waitlist":
+//		SetState(chatID, StateWaitlistChooseCourse)
+//
+//		markup := waitlistInlineMenu()
+//
+//		edit := tgbotapi.NewEditMessageText(
+//			chatID,
+//			callback.Message.MessageID,
+//			"Выберите курс, в лист ожидания которого хотите записаться:",
+//		)
+//		edit.ReplyMarkup = &markup
+//
+//		bot.api.Send(edit)
+//
+//	case strings.HasPrefix(data, "waitlist:"):
+//		course := strings.TrimPrefix(data, "waitlist:")
+//
+//		userTempCourse[chatID] = course
+//
+//		msg.Text = course
+//		waitlistChooseCourseHandler(bot, &msg)
+//	}
+//}
+
 func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
-	if callback == nil {
-		return
-	}
-
-	log.Printf("CALLBACK DATA: %q", callback.Data)
-
-	if callback.Message == nil {
+	if callback == nil || callback.Message == nil {
 		return
 	}
 
@@ -313,6 +486,7 @@ func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
 
 	chatID := callback.Message.Chat.ID
 	data := callback.Data
+	messageID := callback.Message.MessageID
 
 	msg := *callback.Message
 	msg.Text = data
@@ -322,157 +496,394 @@ func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
 	// ===== MAIN MENU =====
 
 	case data == "main":
-		startHandler(bot, &msg)
+		SetState(chatID, StateDefault)
+
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Здравствуйте! Это Shape and line — современная художественная онлайн-школа в Санкт-Петербурге.\n\n"+
+				"В обучении мы соединили традиции классического рисунка с прогрессивными зарубежными методиками и цифровыми технологиями, чтобы вы могли учиться у лучших преподавателей, где бы вы ни находились.\n"+
+				"Этот бот поможет вам сориентироваться в наших курсах, ответит на любые вопросы, а также запишет вас в лист ожидания!\n\n"+
+				"Если у вас остались вопросы, вы хотите записаться на курс или нужна любая другая помощь, вы можете обратиться к нашему менеджеру @shapeandlinemanager",
+		)
+
+		markup := mainInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	// ===== FAQ =====
 
 	case data == "faq":
-		faqHandler(bot, &msg)
+		SetState(chatID, StateFAQ)
+
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Выберите категорию вопросов:",
+		)
+
+		markup := faqCategoriesInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "faq_about":
-		msg.Text = "О школе"
-		faqCategoryHandler(bot, &msg)
+		SetState(chatID, StateFAQAbout)
+
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Вопросы о школе:",
+		)
+
+		markup := faqAboutSchoolInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "faq_payment":
-		msg.Text = "Вопросы об оплате"
-		faqCategoryHandler(bot, &msg)
+		SetState(chatID, StateFAQPayment)
+
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Вопросы об оплате:",
+		)
+
+		markup := faqPaymentInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "faq_study":
-		msg.Text = "Вопросы об обучении"
-		faqCategoryHandler(bot, &msg)
+		SetState(chatID, StateFAQStudy)
 
-	// FAQ — answers
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Вопросы об обучении:",
+		)
+
+		markup := faqStudyInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
+
+	// ===== FAQ ANSWERS =====
 
 	case data == "faq_about_info":
-		faqAboutHandler(bot, &msg)
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Shape and Line — онлайн-школа рисования из Санкт-Петербурга.\n\n"+
+				"Мы объединяем классическую академическую базу, современные цифровые технологии "+
+				"и опыт кураторов, которые работают в игровой индустрии, анимации и комиксах.\n\n"+
+				"На курсах мы разбираем, как устроены форма, свет, цвет, перспектива, анатомия, "+
+				"композиция и многое другое. Это та основа, которая остаётся с вами независимо от того, "+
+				"в каком направлении вы решите развиваться дальше!",
+		)
 
-		resp := tgbotapi.NewMessage(chatID, "Вопросы о школе:")
-		resp.ReplyMarkup = faqAboutSchoolInlineMenu()
-		bot.api.Send(resp)
+		markup := faqAboutSchoolInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "faq_level":
-		faqLevelHandler(bot, &msg)
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Мы будем рады помочь вам с выбором!\n\n"+
+				"Чтобы оценить ваш уровень и подобрать подходящий курс, "+
+				"пожалуйста, расскажите о ваших актуальных целях. Также вы можете прислать небольшое портфолио из 4–5 работ ссылкой на диск, "+
+				"вашу группу или файлами — это поможет нашим кураторам подобрать для вас курс, который будет для вас сейчас наиболее полезным.\n\n"+
+				"Всю подготовленную информацию и портфолио вы можете отправить нашему менеджеру @shapeandlinemanager — и мы поможем подобрать для вас курс!",
+		)
 
-		resp := tgbotapi.NewMessage(chatID, "Вопросы о школе:")
-		resp.ReplyMarkup = faqAboutSchoolInlineMenu()
-		bot.api.Send(resp)
+		markup := faqAboutSchoolInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "faq_register":
-		faqHowToRegisterHandler(bot, &msg)
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Для записи на курс можете обратиться к нашему менеджеру: @shapeandlinemanager\n\n"+
+				"Для записи вас на курс потребуется подготовить портфолио ваших актуальных работ. Это актуально для всех курсов, кроме «Основ рисунка», "+
+				"так как прием в группу осуществляется только после одобрения ваших работ куратором.\n"+
+				"Это может быть ссылка на артстейшн, сообщество в соцсетях или на папку с работами на гугл-диске, отражающих ваш уровень!",
+		)
 
-		resp := tgbotapi.NewMessage(chatID, "Вопросы о школе:")
-		resp.ReplyMarkup = faqAboutSchoolInlineMenu()
-		bot.api.Send(resp)
+		markup := faqAboutSchoolInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "faq_pay_when":
-		faqWhenToPayHandler(bot, &msg)
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Оплату курса необходимо произвести до начала курса в любое удобное для вас время."+
+				"Но мы рекомендуем не затягивать, так как количество мест в группе ограничено, а бронь места возможна только при оплате!\n\n"+
+				"Ссылку на оплату вы получите только после подписания договора. Наш куратор подготовит для вас персональную ссылку для оплаты.",
+		)
 
-		resp := tgbotapi.NewMessage(chatID, "Вопросы об оплате:")
-		resp.ReplyMarkup = faqPaymentInlineMenu()
-		bot.api.Send(resp)
+		markup := faqPaymentInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "faq_installment":
-		faqInstallmentHandler(bot, &msg)
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Мы предлагаем рассрочку для держателей карт российских банков на 4 и 6 месяцев. Рассрочка без процентов и предоставляется от Т-банка.\n"+
+				"*Банк вправе установить комиссию (проценты) для Клиентов за предоставление рассрочки на приобретение Товара или иную ставку, в связи с чем у"+
+				"Клиента может возникнуть переплата за Товар. Банк самостоятельно определяет размер комиссии (процентов) и повышенной ставки и иные условия их"+
+				"расчета и начисления по своему усмотрению.\n\nЕщё оплату можно внести долями. Подробнее о сервисе Долями по ссылке: https://dolyame.ru/help/customer/about/",
+		)
 
-		resp := tgbotapi.NewMessage(chatID, "Вопросы об оплате:")
-		resp.ReplyMarkup = faqPaymentInlineMenu()
-		bot.api.Send(resp)
+		markup := faqPaymentInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "faq_foreign":
-		faqForeignHandler(bot, &msg)
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Мы принимаем оплату из других стран переводом куратору через сервис PayPal!\n"+
+				"Если данный способ вам не подходит, вы можете уточнить варианты оплаты у менеджера @shapeandlinemanager",
+		)
 
-		resp := tgbotapi.NewMessage(chatID, "Вопросы об оплате:")
-		resp.ReplyMarkup = faqPaymentInlineMenu()
-		bot.api.Send(resp)
+		markup := faqPaymentInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "faq_format":
-		faqFormatHandler(bot, &msg)
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Курсы представлены в формате предзаписанных лекций, в конце которых содержится домашнее задание. "+
+				"Просматриваете и выполняете задания вы самостоятельно.  Лекции предоставляются в формате файлов для скачивания, которые "+
+				"доступны для просмотра через Инфопротектор. Доступ к лекционным материалам предоставляется студентам бессрочно.\n\n"+
+				"Раз в неделю в определённое время проходит групповой созвон, где вы получаете фидбек на домашнее задание от куратора. "+
+				"Созвоны в основном проходят в 19:00 по МСК, так же у студентов есть доступ к записям фидбеков.",
+		)
 
-		resp := tgbotapi.NewMessage(chatID, "Вопросы об обучении:")
-		resp.ReplyMarkup = faqStudyInlineMenu()
-		bot.api.Send(resp)
+		markup := faqStudyInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "faq_pause":
-		faqPauseHandler(bot, &msg)
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"В случае непредвиденных обстоятельств или отпуска вы можете взять перерыв на некоторое время, "+
+				"но разборы домашних заданий будут идти в обычном режиме.\nВы можете догнать группу, но куратор не сможет разобрать ваши домашние задания "+
+				"с пропущенных недель в полном объёме!",
+		)
 
-		resp := tgbotapi.NewMessage(chatID, "Вопросы об обучении:")
-		resp.ReplyMarkup = faqStudyInlineMenu()
-		bot.api.Send(resp)
+		markup := faqStudyInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "faq_certificate":
-		faqCertificateHandler(bot, &msg)
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Мы предоставляем электронный сертификат об успешном завершении курса по вашему запросу!\n\n"+
+				"Но уточним, что это не диплом о профессиональной переподготовке и не официальный сертификат о повышении квалификации.",
+		)
 
-		resp := tgbotapi.NewMessage(chatID, "Вопросы об обучении:")
-		resp.ReplyMarkup = faqStudyInlineMenu()
-		bot.api.Send(resp)
+		markup := faqStudyInlineMenu()
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	// ===== COURSES =====
 
 	case data == "courses":
 		SetState(chatID, StateCourses)
 
-		markup := coursesInlineMenu()
-
 		edit := tgbotapi.NewEditMessageText(
 			chatID,
-			callback.Message.MessageID,
+			messageID,
 			"Выберите курс:",
 		)
-		edit.ReplyMarkup = &markup
 
+		markup := coursesInlineMenu()
+		edit.ReplyMarkup = &markup
 		bot.api.Send(edit)
 
 	case strings.HasPrefix(data, "course:"):
 		course := strings.TrimPrefix(data, "course:")
 
-		msg.Text = course
-		courseDetailsHandler(bot, &msg)
+		userTempCourse[chatID] = course
+		SetState(chatID, StateCourseMenu)
+
+		info := CoursesInfo[course]
+
+		// Если текущее сообщение — текстовое меню, превращаем его в сообщение с курсом.
+		if callback.Message.Photo == nil {
+			photo := tgbotapi.NewPhoto(
+				chatID,
+				tgbotapi.FileURL(info.ImageURL),
+			)
+
+			photo.Caption = fmt.Sprintf(
+				"Что вы хотите узнать о курсе «%s»?",
+				course,
+			)
+
+			photo.ReplyMarkup = courseInlineMenu(course)
+
+			// Удаляем старое меню, чтобы сообщения не копились.
+			deleteMsg := tgbotapi.NewDeleteMessage(chatID, messageID)
+			bot.api.Send(deleteMsg)
+
+			bot.api.Send(photo)
+		} else {
+			edit := tgbotapi.NewEditMessageCaption(
+				chatID,
+				messageID,
+				fmt.Sprintf(
+					"Что вы хотите узнать о курсе «%s»?",
+					course,
+				),
+			)
+
+			markup := courseInlineMenu(course)
+			edit.ReplyMarkup = &markup
+			bot.api.Send(edit)
+		}
 
 	// ===== COURSE INFO =====
 
 	case data == "courseinfo:main":
-		courseMainInfoHandler(bot, &msg)
+		course := userTempCourse[chatID]
+		info := CoursesInfo[course]
+
+		edit := tgbotapi.NewEditMessageCaption(
+			chatID,
+			messageID,
+			info.MainInfo,
+		)
+
+		markup := courseInlineMenu(course)
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "courseinfo:tariffs":
-		courseTariffsHandler(bot, &msg)
+		course := userTempCourse[chatID]
+		info := CoursesInfo[course]
+
+		edit := tgbotapi.NewEditMessageCaption(
+			chatID,
+			messageID,
+			info.Tariffs,
+		)
+
+		markup := courseInlineMenu(course)
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "courseinfo:schedule":
-		courseScheduleHandler(bot, &msg)
+		course := userTempCourse[chatID]
+		info := CoursesInfo[course]
+
+		edit := tgbotapi.NewEditMessageCaption(
+			chatID,
+			messageID,
+			info.Schedule,
+		)
+
+		markup := courseInlineMenu(course)
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "courseinfo:about":
-		courseAboutHandler(bot, &msg)
+		course := userTempCourse[chatID]
+		info := CoursesInfo[course]
+
+		edit := tgbotapi.NewEditMessageCaption(
+			chatID,
+			messageID,
+			info.About,
+		)
+
+		markup := courseInlineMenu(course)
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "courseinfo:tools":
-		courseToolsHandler(bot, &msg)
+		course := userTempCourse[chatID]
+		info := CoursesInfo[course]
+
+		edit := tgbotapi.NewEditMessageCaption(
+			chatID,
+			messageID,
+			info.Tools,
+		)
+
+		markup := courseInlineMenu(course)
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "courseinfo:forwhom":
-		courseForWhomHandler(bot, &msg)
+		course := userTempCourse[chatID]
+		info := CoursesInfo[course]
+
+		edit := tgbotapi.NewEditMessageCaption(
+			chatID,
+			messageID,
+			info.ForWhom,
+		)
+
+		markup := courseInlineMenu(course)
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	case data == "courseinfo:works":
-		WhereToFindWorksHandler(bot, &msg)
+		course := userTempCourse[chatID]
+		info := CoursesInfo[course]
+
+		edit := tgbotapi.NewEditMessageCaption(
+			chatID,
+			messageID,
+			info.WhereToFindWorks,
+		)
+
+		markup := courseInlineMenu(course)
+		edit.ReplyMarkup = &markup
+		bot.api.Send(edit)
 
 	// ===== WAITLIST =====
 
 	case data == "waitlist":
 		SetState(chatID, StateWaitlistChooseCourse)
 
-		markup := waitlistInlineMenu()
-
 		edit := tgbotapi.NewEditMessageText(
 			chatID,
-			callback.Message.MessageID,
-			"Выберите курс, в лист ожидания которого хотите записаться:",
+			messageID,
+			"Лист ожидания не предусматривает оплаты, мы лишь уведомим вас о начале набора до официального поста в группе!\n"+
+				"Хотим предупредить, что запись в лист ожидания не гарантирует запись на курс.\n\n"+
+				"Выберите курс, на который хотите записаться в лист ожидания:",
 		)
-		edit.ReplyMarkup = &markup
 
+		markup := waitlistInlineMenu()
+		edit.ReplyMarkup = &markup
 		bot.api.Send(edit)
 
 	case strings.HasPrefix(data, "waitlist:"):
 		course := strings.TrimPrefix(data, "waitlist:")
 
 		userTempCourse[chatID] = course
+		SetState(chatID, StateWaitlistAskFullName)
 
-		msg.Text = course
-		waitlistChooseCourseHandler(bot, &msg)
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			messageID,
+			"Пожалуйста введите ваше ФИО через пробел:",
+		)
+
+		markup := WaitlistProgressMenu()
+
+		edit.ReplyMarkup = nil
+
+		bot.api.Send(edit)
+
+		_ = markup
+
 	}
 }
