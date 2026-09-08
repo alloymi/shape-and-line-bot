@@ -299,7 +299,13 @@ func resetToMainMenu(b *Bot, chatID int64) {
 }
 
 func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
-	if callback == nil || callback.Message == nil {
+	if callback == nil {
+		return
+	}
+
+	log.Printf("CALLBACK DATA: %q", callback.Data)
+
+	if callback.Message == nil {
 		return
 	}
 
