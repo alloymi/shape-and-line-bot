@@ -303,20 +303,22 @@ func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
 		return
 	}
 
-	// Убираем "часики" с нажатой кнопки
 	_, _ = bot.api.Request(tgbotapi.NewCallback(callback.ID, ""))
 
 	chatID := callback.Message.Chat.ID
 	data := callback.Data
 
-	// Делаем копию сообщения и подставляем в него
-	// текст кнопки, чтобы старые handlers продолжили работать.
 	msg := *callback.Message
 	msg.Text = data
 
 	switch {
+
+	// ===== MAIN MENU =====
+
 	case data == "main":
 		startHandler(bot, &msg)
+
+	// ===== FAQ =====
 
 	case data == "faq":
 		faqHandler(bot, &msg)
@@ -333,32 +335,72 @@ func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
 		msg.Text = "Вопросы об обучении"
 		faqCategoryHandler(bot, &msg)
 
+	// FAQ — answers
+
 	case data == "faq_about_info":
 		faqAboutHandler(bot, &msg)
 
-	case data == "faq_format":
-		faqFormatHandler(bot, &msg)
-
-	case data == "faq_register":
-		faqHowToRegisterHandler(bot, &msg)
-
-	case data == "faq_pay_when":
-		faqWhenToPayHandler(bot, &msg)
-
-	case data == "faq_installment":
-		faqInstallmentHandler(bot, &msg)
-
-	case data == "faq_foreign":
-		faqForeignHandler(bot, &msg)
+		resp := tgbotapi.NewMessage(chatID, "Вопросы о школе:")
+		resp.ReplyMarkup = faqAboutSchoolInlineMenu()
+		bot.api.Send(resp)
 
 	case data == "faq_level":
 		faqLevelHandler(bot, &msg)
 
+		resp := tgbotapi.NewMessage(chatID, "Вопросы о школе:")
+		resp.ReplyMarkup = faqAboutSchoolInlineMenu()
+		bot.api.Send(resp)
+
+	case data == "faq_register":
+		faqHowToRegisterHandler(bot, &msg)
+
+		resp := tgbotapi.NewMessage(chatID, "Вопросы о школе:")
+		resp.ReplyMarkup = faqAboutSchoolInlineMenu()
+		bot.api.Send(resp)
+
+	case data == "faq_pay_when":
+		faqWhenToPayHandler(bot, &msg)
+
+		resp := tgbotapi.NewMessage(chatID, "Вопросы об оплате:")
+		resp.ReplyMarkup = faqPaymentInlineMenu()
+		bot.api.Send(resp)
+
+	case data == "faq_installment":
+		faqInstallmentHandler(bot, &msg)
+
+		resp := tgbotapi.NewMessage(chatID, "Вопросы об оплате:")
+		resp.ReplyMarkup = faqPaymentInlineMenu()
+		bot.api.Send(resp)
+
+	case data == "faq_foreign":
+		faqForeignHandler(bot, &msg)
+
+		resp := tgbotapi.NewMessage(chatID, "Вопросы об оплате:")
+		resp.ReplyMarkup = faqPaymentInlineMenu()
+		bot.api.Send(resp)
+
+	case data == "faq_format":
+		faqFormatHandler(bot, &msg)
+
+		resp := tgbotapi.NewMessage(chatID, "Вопросы об обучении:")
+		resp.ReplyMarkup = faqStudyInlineMenu()
+		bot.api.Send(resp)
+
 	case data == "faq_pause":
 		faqPauseHandler(bot, &msg)
 
+		resp := tgbotapi.NewMessage(chatID, "Вопросы об обучении:")
+		resp.ReplyMarkup = faqStudyInlineMenu()
+		bot.api.Send(resp)
+
 	case data == "faq_certificate":
 		faqCertificateHandler(bot, &msg)
+
+		resp := tgbotapi.NewMessage(chatID, "Вопросы об обучении:")
+		resp.ReplyMarkup = faqStudyInlineMenu()
+		bot.api.Send(resp)
+
+	// ===== COURSES =====
 
 	case data == "courses":
 		SetState(chatID, StateCourses)
@@ -373,29 +415,30 @@ func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
 		msg.Text = course
 		courseDetailsHandler(bot, &msg)
 
-	case strings.HasPrefix(data, "courseinfo:"):
-		switch strings.TrimPrefix(data, "courseinfo:") {
-		case "main":
-			courseMainInfoHandler(bot, &msg)
+	// ===== COURSE INFO =====
 
-		case "tariffs":
-			courseTariffsHandler(bot, &msg)
+	case data == "courseinfo:main":
+		courseMainInfoHandler(bot, &msg)
 
-		case "schedule":
-			courseScheduleHandler(bot, &msg)
+	case data == "courseinfo:tariffs":
+		courseTariffsHandler(bot, &msg)
 
-		case "about":
-			courseAboutHandler(bot, &msg)
+	case data == "courseinfo:schedule":
+		courseScheduleHandler(bot, &msg)
 
-		case "tools":
-			courseToolsHandler(bot, &msg)
+	case data == "courseinfo:about":
+		courseAboutHandler(bot, &msg)
 
-		case "forwhom":
-			courseForWhomHandler(bot, &msg)
+	case data == "courseinfo:tools":
+		courseToolsHandler(bot, &msg)
 
-		case "works":
-			WhereToFindWorksHandler(bot, &msg)
-		}
+	case data == "courseinfo:forwhom":
+		courseForWhomHandler(bot, &msg)
+
+	case data == "courseinfo:works":
+		WhereToFindWorksHandler(bot, &msg)
+
+	// ===== WAITLIST =====
 
 	case data == "waitlist":
 		startWaitlistHandler(bot, &msg)
@@ -403,8 +446,6 @@ func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
 	case strings.HasPrefix(data, "waitlist:"):
 		course := strings.TrimPrefix(data, "waitlist:")
 
-		// В старом handler это было закомментировано.
-		// Для inline-кнопки сохраняем выбранный курс здесь.
 		userTempCourse[chatID] = course
 
 		msg.Text = course
