@@ -750,19 +750,32 @@ func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
 
 	// ===== COURSE INFO =====
 
-	case data == "courseinfo:main":
-		course := userTempCourse[chatID]
-		info := CoursesInfo[course]
+	case data == "courses":
+		SetState(chatID, StateCourses)
 
-		edit := tgbotapi.NewEditMessageCaption(
-			chatID,
-			messageID,
-			info.MainInfo,
-		)
+		// Удаляем старое сообщение с главным меню
+		deleteMsg := tgbotapi.NewDeleteMessage(chatID, messageID)
+		bot.api.Send(deleteMsg)
 
-		markup := courseInlineMenu(course)
-		edit.ReplyMarkup = &markup
-		bot.api.Send(edit)
+		// Создаём меню курсов
+		newMsg := tgbotapi.NewMessage(chatID, "Выберите курс:")
+		markup := coursesInlineMenu()
+		newMsg.ReplyMarkup = markup
+
+		bot.api.Send(newMsg)
+	//case data == "courseinfo:main":
+	//	course := userTempCourse[chatID]
+	//	info := CoursesInfo[course]
+	//
+	//	edit := tgbotapi.NewEditMessageCaption(
+	//		chatID,
+	//		messageID,
+	//		info.MainInfo,
+	//	)
+	//
+	//	markup := courseInlineMenu(course)
+	//	edit.ReplyMarkup = &markup
+	//	bot.api.Send(edit)
 
 	case data == "courseinfo:tariffs":
 		course := userTempCourse[chatID]
@@ -853,17 +866,36 @@ func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
 	case data == "waitlist":
 		SetState(chatID, StateWaitlistChooseCourse)
 
-		edit := tgbotapi.NewEditMessageText(
+		// Удаляем старое сообщение с главным меню
+		deleteMsg := tgbotapi.NewDeleteMessage(chatID, messageID)
+		bot.api.Send(deleteMsg)
+
+		// Создаём меню листа ожидания
+		newMsg := tgbotapi.NewMessage(
 			chatID,
-			messageID,
 			"Лист ожидания не предусматривает оплаты, мы лишь уведомим вас о начале набора до официального поста в группе!\n"+
 				"Хотим предупредить, что запись в лист ожидания не гарантирует запись на курс.\n\n"+
 				"Выберите курс, на который хотите записаться в лист ожидания:",
 		)
 
 		markup := waitlistInlineMenu()
-		edit.ReplyMarkup = &markup
-		bot.api.Send(edit)
+		newMsg.ReplyMarkup = markup
+
+		bot.api.Send(newMsg)
+	//case data == "waitlist":
+	//	SetState(chatID, StateWaitlistChooseCourse)
+	//
+	//	edit := tgbotapi.NewEditMessageText(
+	//		chatID,
+	//		messageID,
+	//		"Лист ожидания не предусматривает оплаты, мы лишь уведомим вас о начале набора до официального поста в группе!\n"+
+	//			"Хотим предупредить, что запись в лист ожидания не гарантирует запись на курс.\n\n"+
+	//			"Выберите курс, на который хотите записаться в лист ожидания:",
+	//	)
+	//
+	//	markup := waitlistInlineMenu()
+	//	edit.ReplyMarkup = &markup
+	//	bot.api.Send(edit)
 
 	case strings.HasPrefix(data, "waitlist:"):
 		course := strings.TrimPrefix(data, "waitlist:")
