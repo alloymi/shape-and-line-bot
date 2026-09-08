@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -166,6 +167,9 @@ func (bot *Bot) startPolling() {
 		if update.Message != nil {
 			bot.processMessage(update.Message)
 		}
+		if update.CallbackQuery != nil {
+			bot.processCallback(update.CallbackQuery)
+		}
 	}
 }
 
@@ -197,6 +201,9 @@ func (bot *Bot) startWebhook() {
 		for update := range updates {
 			if update.Message != nil {
 				bot.processMessage(update.Message)
+			}
+			if update.CallbackQuery != nil {
+				bot.processCallback(update.CallbackQuery)
 			}
 		}
 	}()
@@ -289,4 +296,118 @@ func resetToMainMenu(b *Bot, chatID int64) {
 	msg := tgbotapi.NewMessage(chatID, "Запись отменена. Возвращение в главное меню.")
 	msg.ReplyMarkup = Menus["main"]
 	b.api.Send(msg)
+}
+
+func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
+	if callback == nil || callback.Message == nil {
+		return
+	}
+
+	// Убираем "часики" с нажатой кнопки
+	_, _ = bot.api.Request(tgbotapi.NewCallback(callback.ID, ""))
+
+	chatID := callback.Message.Chat.ID
+	data := callback.Data
+
+	// Делаем копию сообщения и подставляем в него
+	// текст кнопки, чтобы старые handlers продолжили работать.
+	msg := *callback.Message
+	msg.Text = data
+
+	switch {
+	case data == "main":
+		startHandler(bot, &msg)
+
+	case data == "faq":
+		faqHandler(bot, &msg)
+
+	case data == "faq_about":
+		msg.Text = "О школе"
+		faqCategoryHandler(bot, &msg)
+
+	case data == "faq_payment":
+		msg.Text = "Вопросы об оплате"
+		faqCategoryHandler(bot, &msg)
+
+	case data == "faq_study":
+		msg.Text = "Вопросы об обучении"
+		faqCategoryHandler(bot, &msg)
+
+	case data == "faq_about_info":
+		faqAboutHandler(bot, &msg)
+
+	case data == "faq_format":
+		faqFormatHandler(bot, &msg)
+
+	case data == "faq_register":
+		faqHowToRegisterHandler(bot, &msg)
+
+	case data == "faq_pay_when":
+		faqWhenToPayHandler(bot, &msg)
+
+	case data == "faq_installment":
+		faqInstallmentHandler(bot, &msg)
+
+	case data == "faq_foreign":
+		faqForeignHandler(bot, &msg)
+
+	case data == "faq_level":
+		faqLevelHandler(bot, &msg)
+
+	case data == "faq_pause":
+		faqPauseHandler(bot, &msg)
+
+	case data == "faq_certificate":
+		faqCertificateHandler(bot, &msg)
+
+	case data == "courses":
+		SetState(chatID, StateCourses)
+
+		resp := tgbotapi.NewMessage(chatID, "Выберите курс:")
+		resp.ReplyMarkup = coursesInlineMenu()
+		bot.api.Send(resp)
+
+	case strings.HasPrefix(data, "course:"):
+		course := strings.TrimPrefix(data, "course:")
+
+		msg.Text = course
+		courseDetailsHandler(bot, &msg)
+
+	case strings.HasPrefix(data, "courseinfo:"):
+		switch strings.TrimPrefix(data, "courseinfo:") {
+		case "main":
+			courseMainInfoHandler(bot, &msg)
+
+		case "tariffs":
+			courseTariffsHandler(bot, &msg)
+
+		case "schedule":
+			courseScheduleHandler(bot, &msg)
+
+		case "about":
+			courseAboutHandler(bot, &msg)
+
+		case "tools":
+			courseToolsHandler(bot, &msg)
+
+		case "forwhom":
+			courseForWhomHandler(bot, &msg)
+
+		case "works":
+			WhereToFindWorksHandler(bot, &msg)
+		}
+
+	case data == "waitlist":
+		startWaitlistHandler(bot, &msg)
+
+	case strings.HasPrefix(data, "waitlist:"):
+		course := strings.TrimPrefix(data, "waitlist:")
+
+		// В старом handler это было закомментировано.
+		// Для inline-кнопки сохраняем выбранный курс здесь.
+		userTempCourse[chatID] = course
+
+		msg.Text = course
+		waitlistChooseCourseHandler(bot, &msg)
+	}
 }

@@ -48,20 +48,27 @@ func startHandler(bot *Bot, m *tgbotapi.Message) {
 		log.Printf("Failed to send welcome image: %v", err)
 	}
 
-	if kb, ok := Menus["main"]; ok {
-		msg.ReplyMarkup = kb
-	}
+	//if kb, ok := Menus["main"]; ok {
+	//	msg.ReplyMarkup = kb
+	//}
+	msg.ReplyMarkup = mainInlineMenu()
 
 	if _, err := bot.api.Send(msg); err != nil {
 		log.Printf("Failed to send main menu: %v", err)
 	}
 }
 
+//	func faqHandler(b *Bot, msg *tgbotapi.Message) {
+//		SetState(msg.Chat.ID, StateFAQ)
+//
+//		resp := tgbotapi.NewMessage(msg.Chat.ID, "Выберите категорию вопросов:")
+//		resp.ReplyMarkup = faqCategoriesMenu()
+//		b.api.Send(resp)
+//	}
 func faqHandler(b *Bot, msg *tgbotapi.Message) {
 	SetState(msg.Chat.ID, StateFAQ)
-
 	resp := tgbotapi.NewMessage(msg.Chat.ID, "Выберите категорию вопросов:")
-	resp.ReplyMarkup = faqCategoriesMenu()
+	resp.ReplyMarkup = faqCategoriesInlineMenu()
 	b.api.Send(resp)
 }
 
@@ -73,19 +80,19 @@ func faqCategoryHandler(b *Bot, msg *tgbotapi.Message) {
 	case "О школе":
 		SetState(chatID, StateFAQAbout)
 		resp := tgbotapi.NewMessage(chatID, "Вопросы о школе:")
-		resp.ReplyMarkup = faqAboutSchoolMenu()
+		resp.ReplyMarkup = faqAboutSchoolInlineMenu()
 		b.api.Send(resp)
 
 	case "Вопросы об оплате":
 		SetState(chatID, StateFAQPayment)
 		resp := tgbotapi.NewMessage(chatID, "Вопросы об оплате:")
-		resp.ReplyMarkup = faqPaymentMenu()
+		resp.ReplyMarkup = faqPaymentInlineMenu()
 		b.api.Send(resp)
 
 	case "Вопросы об обучении":
 		SetState(chatID, StateFAQStudy)
 		resp := tgbotapi.NewMessage(chatID, "Вопросы об обучении:")
-		resp.ReplyMarkup = faqStudyMenu()
+		resp.ReplyMarkup = faqStudyInlineMenu()
 		b.api.Send(resp)
 
 	case "Назад в главное меню":
@@ -175,7 +182,7 @@ func courseDetailsHandler(b *Bot, m *tgbotapi.Message) {
 
 	imgMsg := tgbotapi.NewPhoto(chatID, tgbotapi.FileURL(img.ImageURL))
 	imgMsg.Caption = fmt.Sprintf("Что вы хотите узнать о курсе «%s»?", course)
-	imgMsg.ReplyMarkup = CourseMenu(course)
+	imgMsg.ReplyMarkup = courseInlineMenu(course)
 
 	b.api.Send(imgMsg)
 }
@@ -189,7 +196,7 @@ func startWaitlistHandler(b *Bot, msg *tgbotapi.Message) {
 		"Хотим предупредить, что запись в лист ожидания не гарантирует запись на курс.\n\n"+
 		"Выберите курс, на который хотите записаться в лист ожидания:")
 
-	resp.ReplyMarkup = WaitlistCoursesMenu()
+	resp.ReplyMarkup = waitlistInlineMenu()
 
 	b.api.Send(resp)
 }
@@ -197,6 +204,7 @@ func startWaitlistHandler(b *Bot, msg *tgbotapi.Message) {
 func waitlistChooseCourseHandler(b *Bot, msg *tgbotapi.Message) {
 	chatID := msg.Chat.ID
 	course := msg.Text
+	userTempCourse[chatID] = course
 	SetState(chatID, StateWaitlistAskFullName)
 
 	//cleanName := strings.TrimPrefix(msg.Text, "WL:")

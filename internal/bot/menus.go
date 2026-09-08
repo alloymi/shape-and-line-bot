@@ -244,3 +244,227 @@ func WaitlistProgressMenu() tgbotapi.ReplyKeyboardMarkup {
 		),
 	)
 }
+
+// ===== INLINE MENUS =====
+
+func inlineButton(text, data string) tgbotapi.InlineKeyboardButton {
+	return tgbotapi.NewInlineKeyboardButtonData(text, data)
+}
+
+func inlineRow(buttons ...tgbotapi.InlineKeyboardButton) []tgbotapi.InlineKeyboardButton {
+	return buttons
+}
+
+// Главное меню
+func mainInlineMenu() tgbotapi.InlineKeyboardMarkup {
+	return tgbotapi.NewInlineKeyboardMarkup(
+		inlineRow(
+			inlineButton("Частые вопросы", "faq"),
+		),
+		inlineRow(
+			inlineButton("Все курсы", "courses"),
+		),
+		inlineRow(
+			inlineButton("Записаться в лист ожидания", "waitlist"),
+		),
+	)
+}
+
+// FAQ — категории
+func faqCategoriesInlineMenu() tgbotapi.InlineKeyboardMarkup {
+	return tgbotapi.NewInlineKeyboardMarkup(
+		inlineRow(
+			inlineButton("О школе", "faq_about"),
+		),
+		inlineRow(
+			inlineButton("Вопросы об оплате", "faq_payment"),
+		),
+		inlineRow(
+			inlineButton("Вопросы об обучении", "faq_study"),
+		),
+		inlineRow(
+			inlineButton("Назад в главное меню", "main"),
+		),
+	)
+}
+
+// FAQ — об оплате
+func faqPaymentInlineMenu() tgbotapi.InlineKeyboardMarkup {
+	return tgbotapi.NewInlineKeyboardMarkup(
+		inlineRow(
+			inlineButton("Как и когда происходит оплата курса?", "faq_pay_when"),
+		),
+		inlineRow(
+			inlineButton("Хочу оплатить в рассрочку. Какие условия?", "faq_installment"),
+		),
+		inlineRow(
+			inlineButton("Я из другой страны. Могу ли я записаться на курс? Как проходит оплата?", "faq_foreign"),
+		),
+		inlineRow(
+			inlineButton("назад", "faq"),
+		),
+	)
+}
+
+// FAQ — обучение
+func faqStudyInlineMenu() tgbotapi.InlineKeyboardMarkup {
+	return tgbotapi.NewInlineKeyboardMarkup(
+		inlineRow(
+			inlineButton("Как проходит обучение?", "faq_format"),
+		),
+		inlineRow(
+			inlineButton("Возможно ли взять перерыв во время курса?", "faq_pause"),
+		),
+		inlineRow(
+			inlineButton("Выдается ли сертификат по окончании курса?", "faq_certificate"),
+		),
+		inlineRow(
+			inlineButton("назад", "faq"),
+		),
+	)
+}
+
+// FAQ — о школе
+func faqAboutSchoolInlineMenu() tgbotapi.InlineKeyboardMarkup {
+	return tgbotapi.NewInlineKeyboardMarkup(
+		inlineRow(
+			inlineButton("Подробнее про школу", "faq_about_info"),
+		),
+		inlineRow(
+			inlineButton("Как понять на какой курс я могу записаться со своим уровнем?", "faq_level"),
+		),
+		inlineRow(
+			inlineButton("Как я могу записаться на курс?", "faq_register"),
+		),
+		inlineRow(
+			inlineButton("назад", "faq"),
+		),
+	)
+}
+
+// Курсы
+func coursesInlineMenu() tgbotapi.InlineKeyboardMarkup {
+	return tgbotapi.NewInlineKeyboardMarkup(
+		inlineRow(
+			inlineButton("Основы рисунка", "course:Основы рисунка"),
+		),
+		inlineRow(
+			inlineButton("Форма и тон", "course:Форма и тон"),
+		),
+		inlineRow(
+			inlineButton("Свет и цвет", "course:Свет и цвет"),
+		),
+		inlineRow(
+			inlineButton("Портрет: Скетчинг и стилизация", "course:Портрет: Скетчинг и стилизация"),
+		),
+		inlineRow(
+			inlineButton("Скетчинг: тело, движение, одежда", "course:Скетчинг: тело, движение, одежда"),
+		),
+		inlineRow(
+			inlineButton("Динамический портрет", "course:Динамический портрет"),
+		),
+		inlineRow(
+			inlineButton("Фигура человека", "course:Фигура человека"),
+		),
+		inlineRow(
+			inlineButton("Мастерская с Евой", "course:Мастерская с Евой"),
+		),
+		inlineRow(
+			inlineButton("Дизайн существ", "course:Дизайн существ"),
+		),
+		inlineRow(
+			inlineButton("Назад в главное меню", "main"),
+		),
+	)
+}
+
+// Меню конкретного курса
+func courseInlineMenu(course string) tgbotapi.InlineKeyboardMarkup {
+	rows := [][]tgbotapi.InlineKeyboardButton{}
+
+	info := CoursesInfo[course]
+
+	if info.MainInfo != "" {
+		rows = append(rows, inlineRow(
+			inlineButton("Основная информация", "courseinfo:main"),
+		))
+	}
+
+	if info.Tariffs != "" {
+		rows = append(rows, inlineRow(
+			inlineButton("Доступные тарифы", "courseinfo:tariffs"),
+		))
+	}
+
+	if info.Schedule != "" {
+		rows = append(rows, inlineRow(
+			inlineButton("Программа курса", "courseinfo:schedule"),
+		))
+	}
+
+	if info.About != "" {
+		rows = append(rows, inlineRow(
+			inlineButton("О чем курс", "courseinfo:about"),
+		))
+	}
+
+	if info.Tools != "" {
+		rows = append(rows, inlineRow(
+			inlineButton("Что понадобится", "courseinfo:tools"),
+		))
+	}
+
+	if info.ForWhom != "" {
+		rows = append(rows, inlineRow(
+			inlineButton("Для кого подходит курс", "courseinfo:forwhom"),
+		))
+	}
+
+	if info.WhereToFindWorks != "" {
+		rows = append(rows, inlineRow(
+			inlineButton("Где посмотреть работы куратора и студентов?", "courseinfo:works"),
+		))
+	}
+
+	rows = append(rows, inlineRow(
+		inlineButton("Назад к списку курсов", "courses"),
+	))
+
+	return tgbotapi.NewInlineKeyboardMarkup(rows...)
+}
+
+// Лист ожидания
+func waitlistInlineMenu() tgbotapi.InlineKeyboardMarkup {
+	return tgbotapi.NewInlineKeyboardMarkup(
+		inlineRow(
+			inlineButton("Основы рисунка", "waitlist:Основы рисунка"),
+		),
+		inlineRow(
+			inlineButton("Форма и тон", "waitlist:Форма и тон"),
+		),
+		inlineRow(
+			inlineButton("Свет и цвет", "waitlist:Свет и цвет"),
+		),
+		inlineRow(
+			inlineButton("Портрет: Скетчинг и стилизация", "waitlist:Портрет:Скетчинг и стилизация"),
+		),
+		inlineRow(
+			inlineButton("Скетчинг: тело, движение, одежда", "waitlist:Скетчинг: тело, движение, одежда"),
+		),
+		inlineRow(
+			inlineButton("Динамический портрет", "waitlist:Динамический портрет"),
+		),
+		inlineRow(
+			inlineButton("Фигура человека", "waitlist:Фигура человека"),
+		),
+		inlineRow(
+			inlineButton("Мастерская с Евой", "waitlist:Мастерская с Евой"),
+		),
+		inlineRow(
+			inlineButton("Дизайн существ", "waitlist:Дизайн существ"),
+		),
+		inlineRow(
+			inlineButton("Назад в главное меню", "main"),
+		),
+	)
+}
