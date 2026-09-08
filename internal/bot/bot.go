@@ -411,9 +411,16 @@ func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
 	case data == "courses":
 		SetState(chatID, StateCourses)
 
-		resp := tgbotapi.NewMessage(chatID, "Выберите курс:")
-		resp.ReplyMarkup = coursesInlineMenu()
-		bot.api.Send(resp)
+		markup := coursesInlineMenu()
+
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			callback.Message.MessageID,
+			"Выберите курс:",
+		)
+		edit.ReplyMarkup = &markup
+
+		bot.api.Send(edit)
 
 	case strings.HasPrefix(data, "course:"):
 		course := strings.TrimPrefix(data, "course:")
@@ -447,7 +454,18 @@ func (bot *Bot) processCallback(callback *tgbotapi.CallbackQuery) {
 	// ===== WAITLIST =====
 
 	case data == "waitlist":
-		startWaitlistHandler(bot, &msg)
+		SetState(chatID, StateWaitlistChooseCourse)
+
+		markup := waitlistInlineMenu()
+
+		edit := tgbotapi.NewEditMessageText(
+			chatID,
+			callback.Message.MessageID,
+			"Выберите курс, в лист ожидания которого хотите записаться:",
+		)
+		edit.ReplyMarkup = &markup
+
+		bot.api.Send(edit)
 
 	case strings.HasPrefix(data, "waitlist:"):
 		course := strings.TrimPrefix(data, "waitlist:")
